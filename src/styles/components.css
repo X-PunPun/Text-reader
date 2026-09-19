@@ -8,7 +8,10 @@
 }
 
 .hl-sentence { background: var(--hl-sentence); }
-.hl-word { background: var(--hl-word); }
+
+/* La palabra en curso se pinta en sólido: el texto real queda encima, en el
+   textarea, así que aquí se le da el color de contraste para que se lea. */
+.hl-word { background: var(--hl-word); color: var(--hl-word-text); }
 
 /* ---------- Botones ---------- */
 .btn {
