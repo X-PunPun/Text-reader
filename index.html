@@ -10,6 +10,21 @@
   <link rel="stylesheet" href="src/styles/layout.css" />
   <link rel="stylesheet" href="src/styles/components.css" />
 
+  <!--
+    ONNX Runtime para el motor Piper. La libreria importa
+    "onnxruntime-web/wasm" como especificador desnudo; sin bundler hace falta
+    este mapa para que el navegador sepa de donde cargarlo.
+    Debe ir antes de cualquier <script type="module">.
+  -->
+  <script type="importmap">
+  {
+    "imports": {
+      "onnxruntime-web": "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.18.0/dist/esm/ort.min.js",
+      "onnxruntime-web/wasm": "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.18.0/dist/esm/ort.wasm.min.js"
+    }
+  }
+  </script>
+
   <script>
     // Aplica el tema guardado antes de pintar, para evitar el parpadeo.
     (function () {
@@ -73,7 +88,13 @@
         </div>
 
         <div class="field grow">
-          <label for="voice-select" data-i18n="label.voice">Voice</label>
+          <div class="field-head field-head--tight">
+            <label for="voice-select" data-i18n="label.voice">Voice</label>
+            <label class="checkbox">
+              <input id="all-langs" type="checkbox" />
+              <span data-i18n="label.allLanguages">All languages</span>
+            </label>
+          </div>
           <div class="select-wrap">
             <select id="voice-select">
               <option data-i18n="select.loading">Loading voices...</option>

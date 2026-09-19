@@ -13,6 +13,10 @@
  */
 
 const LIB_URL = "https://cdn.jsdelivr.net/npm/@mintplex-labs/piper-tts-web@1.0.5/dist/piper-tts-web.js";
+
+// Binarios de ONNX Runtime. Tienen que ser de la MISMA version que el modulo
+// del import map de index.html, o el motor no encuentra su backend.
+const ORT_BASE = "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.18.0/dist/";
 const PREFIX = "piper:";
 const CACHE_LIMIT = 3;
 
@@ -33,7 +37,22 @@ export function createPiperAdapter({ onProgress } = {}) {
   }
 
   async function load() {
-    if (!lib) lib = await import(/* @vite-ignore */ LIB_URL);
+    if (lib) return lib;
+
+    // onnxruntime-web se resuelve por el import map de index.html: la
+    // libreria lo importa como especificador desnudo y el navegador, sin
+    // bundler, no sabria de donde sacarlo.
+    const ort = await import("onnxruntime-web/wasm");
+
+    // Los hilos de WebAssembly exigen cross-origin isolation (cabeceras
+    // COOP/COEP), que GitHub Pages no permite configurar. Un solo hilo basta:
+    // una frase tarda menos de medio segundo.
+    ort.env.wasm.numThreads = 1;
+    ort.env.wasm.wasmPaths = ORT_BASE;
+
+    lib = await import(/* @vite-ignore */ LIB_URL);
+    // Por defecto apunta a una ruta de CDN que ya no sirve los binarios.
+    lib.TtsSession.WASM_LOCATIONS.onnxWasm = ORT_BASE;
     return lib;
   }
 
@@ -80,6 +99,7 @@ export function createPiperAdapter({ onProgress } = {}) {
     }
 
     session = await api.TtsSession.create({ voiceId: id });
+    await session.waitReady; // create() vuelve antes de que el motor este listo
     sessionVoice = id;
     return session;
   }
