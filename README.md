@@ -31,11 +31,14 @@ node tests/reader.test.mjs
 
 ## Funcionamiento
 
-- **Resaltado en vivo:** mientras lee, marca la frase en curso y, con el motor
-  del navegador, también la palabra exacta.
-- **Control por cursor:** mover el cursor no interrumpe la lectura. Estando en
-  pausa, un clic en cualquier punto del texto hace que al reanudar se empiece
-  exactamente en esa palabra, no al principio de la frase.
+- **Resaltado en vivo:** marca la frase en curso y la palabra exacta que se
+  está diciendo, con todos los motores. El del navegador informa de cada
+  palabra; los que devuelven audio no, así que la posición se deduce del avance
+  de la reproducción (`src/adapters/speech/word-timeline.js`).
+- **Control por cursor:** mientras suena, el texto queda bloqueado — ni cursor
+  ni selección — para no cambiar sin querer el punto de lectura. En pausa, un
+  clic en cualquier punto hace que al reanudar se empiece exactamente en esa
+  palabra.
 - **Velocidad fija por pasos:** de 0.25x a 2.5x, como un reproductor de vídeo.
 - **Tema e idioma:** claro/oscuro y 10 idiomas de interfaz; ambos se recuerdan.
 
@@ -44,7 +47,8 @@ node tests/reader.test.mjs
 | Motor | Cuenta / API key | Conexión | Notas |
 |---|---|---|---|
 | **Navegador** (`native`) | No | No necesita | Voces del sistema operativo. Predeterminado y el único que resalta la palabra exacta. En Brave o Chromium sin voces instaladas habrá muy pocas. |
-| **Piper local** (`piper`) | No | Solo la primera vez | 124 voces neuronales en más de 30 idiomas. Se descargan una vez y quedan en el dispositivo. Unos 0,4 s por frase. |
+| **Piper local** (`piper`) | No | Solo la primera vez | 124 voces neuronales en más de 30 idiomas, un modelo por voz (20–110 MB). Unos 0,4 s por frase. |
+| **Kokoro local** (`kokoro`) | No | Solo la primera vez | Un único modelo de 86 MB con 28 voces inglesas. Más natural que Piper, pero ~4 s por frase y solo inglés. |
 | Custom endpoint | Depende | Sí | Tu propio servicio, con `{text}` y `{voice}` como marcadores. |
 
 ### Por qué no hay servicios públicos de TTS
@@ -88,6 +92,18 @@ permite configurar. Sin esas tres piezas el motor falla con *no available
 backend found*.
 
 Librería: [`@mintplex-labs/piper-tts-web`](https://github.com/Mintplex-Labs/piper-tts-web) (MIT).
+
+La carga del modelo está serializada a propósito: mientras suena una frase se
+prepara la siguiente, así que puede haber dos peticiones a la vez. Sin eso, la
+primera vez que se estrenaba una voz las dos cargas se pisaban y la descarga
+fallaba a media barra.
+
+### Voces locales (Kokoro)
+
+Segunda opción local, con [`kokoro-js`](https://www.npmjs.com/package/kokoro-js)
+sobre Transformers.js. Un solo modelo de 86 MB trae las 28 voces y se guarda en
+la caché del navegador. Suena mejor que Piper, pero tarda unos 4 s por frase y
+solo habla inglés, así que Piper sigue siendo el predeterminado para el resto.
 
 ### Selección de voces por idioma
 
