@@ -458,9 +458,21 @@ select { cursor: pointer; }
 
 .side-note-link:hover { text-decoration: underline; }
 
-/* Solo cuando hay sitio de sobra: nunca empuja la página. */
-@media (min-width: 1280px) {
-  .side-note { display: block; }
+.side-note.is-open { display: block; }
+
+/* En pantallas estrechas se monta sobre el contenido, como la guía. */
+@media (max-width: 1280px) {
+  .side-note {
+    top: auto;
+    bottom: 66px;
+    transform: none;
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .side-note { inset-inline: 12px; width: auto; }
 }
 
 /* ---------- Conmutador de modo ---------- */

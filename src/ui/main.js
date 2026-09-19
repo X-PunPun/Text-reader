@@ -94,7 +94,11 @@ function renderTransport() {
 
 createThemeToggle({ button: el("theme-btn"), icon: el("theme-icon"), storage });
 
-createGuide({ panel: el("guide"), toggle: el("guide-toggle"), storage });
+createGuide({
+  panels: [el("guide"), el("opensource")],
+  toggle: el("guide-toggle"),
+  storage
+});
 
 const speed = createSpeedSlider({
   range: el("speed-range"),

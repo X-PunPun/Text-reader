@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "test": "node tests/reader.test.mjs && node tests/import-map.test.mjs",
-    "test:ui": "node tests/quiz-view.test.mjs && node tests/language-routing.test.mjs",
+    "test:ui": "node tests/quiz-view.test.mjs && node tests/language-routing.test.mjs && node tests/side-panels.test.mjs",
     "build": "node scripts/build-pages.mjs",
     "serve": "python3 -m http.server 8080"
   },
