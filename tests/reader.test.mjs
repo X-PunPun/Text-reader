@@ -7,6 +7,7 @@ import { splitIntoChunks, chunkIndexAtOffset, wordStartAt } from "../src/core/do
 import { createReader } from "../src/core/usecases/reader.js";
 import { clampSpeedIndex, formatSpeed } from "../src/core/domain/speeds.js";
 import { createExporter } from "../src/core/usecases/exporter.js";
+import { createQuiz } from "../src/core/usecases/quiz.js";
 
 const results = [];
 const asyncTests = [];
@@ -289,6 +290,104 @@ testAsync("el progreso informa de cada fragmento y del cierre", async () => {
 
   assert.equal(phases.filter((p) => p === "rendering").length, splitIntoChunks(TEXT).length);
   assert.equal(phases[phases.length - 1], "encoding");
+});
+
+/* ---------------- modo cuestionario ---------------- */
+
+/** Lector de mentira: habla al instante y avisa de que termino. */
+function fakeReader() {
+  const spoken = [];
+  const handlers = [];
+  return {
+    spoken,
+    on: (event, fn) => {
+      handlers.push(fn);
+      return () => handlers.splice(handlers.indexOf(fn), 1);
+    },
+    setText: (text) => spoken.push(text),
+    play: () => {
+      // el lector real pasa por "playing" y termina en "idle"
+      handlers.slice().forEach((fn) => fn({ state: "idle" }));
+    },
+    stop: () => {}
+  };
+}
+
+const QUIZ = [
+  { question: "Capital de Chile?", answer: "Santiago" },
+  { question: "Capital de Peru?", answer: "Lima" },
+  { question: "Capital de Bolivia?", answer: "Sucre" }
+];
+
+testAsync("lee la pregunta y se detiene a esperar la confirmacion", async () => {
+  const reader = fakeReader();
+  const quiz = createQuiz({ reader, shuffle: (l) => l });
+  quiz.setItems(QUIZ);
+  quiz.start();
+  await new Promise((r) => setTimeout(r, 0));
+
+  assert.equal(reader.spoken[0], "Capital de Chile?");
+  assert.equal(quiz.phase, "waiting");
+  assert.equal(reader.spoken.length, 1, "no debe adelantar la respuesta");
+});
+
+testAsync("al confirmar lee la respuesta y encadena la siguiente pregunta", async () => {
+  const reader = fakeReader();
+  const quiz = createQuiz({ reader, shuffle: (l) => l });
+  quiz.setItems(QUIZ);
+  quiz.start();
+  await new Promise((r) => setTimeout(r, 0));
+
+  await quiz.confirm();
+  assert.deepEqual(reader.spoken, ["Capital de Chile?", "Santiago", "Capital de Peru?"]);
+  assert.equal(quiz.phase, "waiting");
+});
+
+testAsync("confirmar fuera de turno no hace nada", async () => {
+  const reader = fakeReader();
+  const quiz = createQuiz({ reader, shuffle: (l) => l });
+  quiz.setItems(QUIZ);
+
+  await quiz.confirm();
+  assert.equal(reader.spoken.length, 0);
+  assert.equal(quiz.phase, "idle");
+});
+
+testAsync("termina despues de la ultima respuesta", async () => {
+  const reader = fakeReader();
+  const quiz = createQuiz({ reader, shuffle: (l) => l });
+  quiz.setItems(QUIZ);
+  quiz.start();
+  await new Promise((r) => setTimeout(r, 0));
+
+  await quiz.confirm();
+  await quiz.confirm();
+  await quiz.confirm();
+
+  assert.equal(quiz.phase, "finished");
+});
+
+testAsync("las preguntas se barajan en cada vuelta", async () => {
+  const reader = fakeReader();
+  const quiz = createQuiz({ reader, shuffle: (l) => l.slice().reverse() });
+  quiz.setItems(QUIZ);
+  quiz.start();
+  await new Promise((r) => setTimeout(r, 0));
+
+  assert.equal(reader.spoken[0], "Capital de Bolivia?");
+});
+
+testAsync("las preguntas vacias se descartan", async () => {
+  const reader = fakeReader();
+  const quiz = createQuiz({ reader, shuffle: (l) => l });
+  quiz.setItems([{ question: "  ", answer: "x" }, ...QUIZ]);
+  assert.equal(quiz.items.length, 3);
+});
+
+testAsync("sin preguntas no arranca", async () => {
+  const quiz = createQuiz({ reader: fakeReader() });
+  quiz.setItems([]);
+  assert.equal(quiz.start(), false);
 });
 
 await Promise.all(asyncTests);
