@@ -1,5 +1,6 @@
 import { createWebSpeechAdapter } from "./web-speech.adapter.js";
 import { createPiperAdapter } from "./piper-local.adapter.js";
+import { createKokoroAdapter } from "./kokoro-local.adapter.js";
 import { createRemoteTtsAdapter } from "./remote-tts.adapter.js";
 import { REMOTE_PROVIDER_IDS, PROVIDERS } from "./providers.js";
 
@@ -16,6 +17,7 @@ export function createEngineRegistry({ getTemplate, onDownloadProgress } = {}) {
   function build(engineId) {
     if (engineId === "native") return createWebSpeechAdapter();
     if (engineId === "piper") return createPiperAdapter({ onProgress: onDownloadProgress });
+    if (engineId === "kokoro") return createKokoroAdapter({ onProgress: onDownloadProgress });
     return createRemoteTtsAdapter(engineId, { getTemplate });
   }
 
@@ -28,6 +30,7 @@ export function createEngineRegistry({ getTemplate, onDownloadProgress } = {}) {
     return [
       { id: "native", labelKey: "engine.native" },
       { id: "piper", labelKey: "engine.piper" },
+      { id: "kokoro", labelKey: "engine.kokoro" },
       ...REMOTE_PROVIDER_IDS.map((id) => ({ id, label: PROVIDERS[id].label }))
     ];
   }
