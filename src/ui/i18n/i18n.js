@@ -10,9 +10,12 @@ export function createI18n({ storage }) {
   const fallback = byCode.get(DEFAULT_LANGUAGE);
   const listeners = [];
 
-  let current = byCode.has(storage.get(STORAGE_KEYS.language))
-    ? byCode.get(storage.get(STORAGE_KEYS.language))
-    : fallback;
+  // Cada página de idioma llega con su propio <html lang>, así que esa es la
+  // preferencia por defecto; lo que el usuario elija a mano manda sobre ella.
+  const saved = storage.get(STORAGE_KEYS.language);
+  const fromPage = document.documentElement.lang;
+  let current =
+    byCode.get(saved) || byCode.get(fromPage) || fallback;
 
   function t(key, vars) {
     let value = current.strings[key] ?? fallback.strings[key];

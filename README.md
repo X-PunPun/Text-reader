@@ -37,6 +37,18 @@ python -m http.server 8080
 
 Then open `http://localhost:8080`.
 
+## Language pages
+
+`index.html` and the `en/ es/ pt/ ...` folders are **generated**, not edited by
+hand. The template is `scripts/page.template.html`; after changing it, run:
+
+```
+node scripts/build-pages.mjs
+```
+
+That rewrites every language page, `sitemap.xml` and `robots.txt`. The page
+texts used for search results live in `scripts/seo-content.mjs`.
+
 ## Tests
 
 The core has no browser dependencies, so it runs under Node:

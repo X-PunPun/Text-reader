@@ -148,3 +148,63 @@
   .btn { flex: 1; }
   h1 { font-size: 26px; }
 }
+
+/* ---------- Texto descriptivo (también es lo que indexan los buscadores) ---------- */
+.about {
+  margin-top: 8px;
+  padding: 26px 28px 28px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-dim);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.about h2 {
+  margin: 0 0 10px;
+  font-size: 19px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.about h3 {
+  margin: 22px 0 6px;
+  font-size: 14px;
+  font-weight: 650;
+  color: var(--text);
+}
+
+.about p { margin: 0; }
+
+.faq { margin: 8px 0 0; }
+
+.faq dt {
+  margin-top: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.faq dd { margin: 4px 0 0; }
+
+@media (max-width: 620px) {
+  .about { padding: 18px; }
+}
+
+/* ---------- Enlaces a las otras versiones de idioma ---------- */
+.lang-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 14px;
+  margin-bottom: 10px;
+}
+
+.lang-links a {
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 12px;
+}
+
+.lang-links a:hover { color: var(--accent); text-decoration: underline; }
