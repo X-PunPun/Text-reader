@@ -33,8 +33,9 @@ node tests/reader.test.mjs
 
 - **Resaltado en vivo:** mientras lee, marca la frase en curso y, con el motor
   del navegador, también la palabra exacta.
-- **Control por cursor:** un clic en cualquier punto del texto salta a esa
-  frase. Si está en pausa, al reanudar continúa desde donde dejaste el cursor.
+- **Control por cursor:** mover el cursor no interrumpe la lectura. Estando en
+  pausa, un clic en cualquier punto del texto hace que al reanudar se empiece
+  exactamente en esa palabra, no al principio de la frase.
 - **Velocidad fija por pasos:** de 0.25x a 2.5x, como un reproductor de vídeo.
 - **Tema e idioma:** claro/oscuro y 10 idiomas de interfaz; ambos se recuerdan.
 
