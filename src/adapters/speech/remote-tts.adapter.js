@@ -44,7 +44,9 @@ export function createRemoteTtsAdapter(providerId, { getTemplate } = {}) {
     audio.onerror = () => {
       if (!active) return;
       active = false;
-      onError("network");
+      // Un <audio> no expone el codigo HTTP: casi siempre significa que el
+      // servicio publico no respondio o dejo de estar disponible.
+      onError("service-down");
     };
 
     audio.src = url;
@@ -52,7 +54,7 @@ export function createRemoteTtsAdapter(providerId, { getTemplate } = {}) {
     audio.play().catch((error) => {
       if (!active) return;
       active = false;
-      onError(error?.name === "NotAllowedError" ? "autoplay-blocked" : "network");
+      onError(error?.name === "NotAllowedError" ? "autoplay-blocked" : "service-down");
     });
   }
 
