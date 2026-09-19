@@ -11,6 +11,7 @@ import { createThemeToggle } from "./components/theme-toggle.js";
 import { createSpeedSlider } from "./components/speed-slider.js";
 import { createEditor } from "./components/editor.js";
 import { createVoicePicker } from "./components/voice-picker.js";
+import { createGuide } from "./components/guide.js";
 
 /**
  * Composición: aquí se enchufan los adaptadores al núcleo y la interfaz
@@ -83,6 +84,8 @@ function renderTransport() {
 /* ---------------- componentes ---------------- */
 
 createThemeToggle({ button: el("theme-btn"), icon: el("theme-icon"), storage });
+
+createGuide({ panel: el("guide"), toggle: el("guide-toggle"), storage });
 
 const speed = createSpeedSlider({
   range: el("speed-range"),
@@ -211,13 +214,13 @@ const exporter = createExporter({
     const format = findFormat(formatSelect.value);
     const joined = await decodeAndJoin(blobs);
 
-    if (format.kind === "wav") {
-      return { blob: encodeWav(joined), extension: "wav" };
-    }
-
-    // Los perfiles de alta calidad suben a 44,1 kHz: por debajo, el MP3 no
-    // admite más de 160 kbps y pedir 320 no cambiaría nada.
+    // Los perfiles de alta calidad suben la frecuencia: por debajo de 44,1 kHz
+    // el MP3 no admite más de 160 kbps y pedir 320 no cambiaría nada.
     const track = await resample(joined, format.sampleRate);
+
+    if (format.kind === "wav") {
+      return { blob: encodeWav(track, format.bitDepth), extension: "wav" };
+    }
 
     try {
       const blob = await encodeMp3(track, format.bitrate, (percent) =>
@@ -226,7 +229,7 @@ const exporter = createExporter({
       return { blob, extension: "mp3" };
     } catch (error) {
       // Sin el codificador MP3 se entrega WAV: pesa más pero suena igual.
-      return { blob: encodeWav(joined), extension: "wav" };
+      return { blob: encodeWav(track, 16), extension: "wav" };
     }
   }
 });

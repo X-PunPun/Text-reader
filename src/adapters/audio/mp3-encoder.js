@@ -100,10 +100,18 @@ export async function encodeMp3(track, bitrate, onProgress) {
   return new Blob(parts, { type: "audio/mpeg" });
 }
 
-/** WAV mono de 16 bits, como plan B si el codificador MP3 no carga. */
-export function encodeWav({ samples, sampleRate }) {
-  const pcm = toInt16(samples);
-  const buffer = new ArrayBuffer(44 + pcm.length * 2);
+/**
+ * WAV mono sin comprimir. 16 bits es lo habitual; 24 bits es lo que piden los
+ * editores de audio para seguir trabajando sin acumular pérdidas.
+ *
+ * @param {{ samples: Float32Array, sampleRate: number }} track
+ * @param {number} [bitDepth] 16 o 24
+ * @returns {Blob}
+ */
+export function encodeWav({ samples, sampleRate }, bitDepth = 16) {
+  const bytesPerSample = bitDepth === 24 ? 3 : 2;
+  const dataBytes = samples.length * bytesPerSample;
+  const buffer = new ArrayBuffer(44 + dataBytes);
   const view = new DataView(buffer);
 
   const text = (at, value) => {
@@ -111,18 +119,33 @@ export function encodeWav({ samples, sampleRate }) {
   };
 
   text(0, "RIFF");
-  view.setUint32(4, 36 + pcm.length * 2, true);
+  view.setUint32(4, 36 + dataBytes, true);
   text(8, "WAVEfmt ");
   view.setUint32(16, 16, true);
-  view.setUint16(20, 1, true);            // PCM
-  view.setUint16(22, 1, true);            // mono
+  view.setUint16(20, 1, true);                            // PCM
+  view.setUint16(22, 1, true);                            // mono
   view.setUint32(24, sampleRate, true);
-  view.setUint32(28, sampleRate * 2, true);
-  view.setUint16(32, 2, true);
-  view.setUint16(34, 16, true);
+  view.setUint32(28, sampleRate * bytesPerSample, true);  // bytes por segundo
+  view.setUint16(32, bytesPerSample, true);
+  view.setUint16(34, bitDepth, true);
   text(36, "data");
-  view.setUint32(40, pcm.length * 2, true);
+  view.setUint32(40, dataBytes, true);
 
-  new Int16Array(buffer, 44).set(pcm);
+  let at = 44;
+  for (let i = 0; i < samples.length; i += 1) {
+    const value = Math.max(-1, Math.min(1, samples[i]));
+
+    if (bitDepth === 24) {
+      const scaled = Math.round(value < 0 ? value * 0x800000 : value * 0x7fffff);
+      view.setUint8(at, scaled & 0xff);
+      view.setUint8(at + 1, (scaled >> 8) & 0xff);
+      view.setUint8(at + 2, (scaled >> 16) & 0xff);
+      at += 3;
+    } else {
+      view.setInt16(at, value < 0 ? value * 0x8000 : value * 0x7fff, true);
+      at += 2;
+    }
+  }
+
   return new Blob([buffer], { type: "audio/wav" });
 }

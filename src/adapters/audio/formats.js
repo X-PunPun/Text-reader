@@ -1,16 +1,20 @@
 /**
  * Formatos de descarga ofrecidos en la interfaz.
  *
- * Los motores locales generan audio de voz mono a 22–24 kHz. Eso condiciona
- * las opciones:
+ * Dos familias: MP3 (comprimido, para escuchar y compartir) y WAV (sin
+ * comprimir, para editar después). Los motores locales generan voz mono a
+ * 22–24 kHz, y eso condiciona los perfiles:
  *
- *  - MPEG-2 Layer III (el que corresponde a 22,05 kHz) tope en 160 kbps, así
- *    que pedir 192 o 320 a esa frecuencia devolvía exactamente el mismo
- *    archivo. Por eso los perfiles de alta calidad remuestrean a 44,1 kHz
- *    antes de codificar.
+ *  - MPEG-2 Layer III, el que corresponde a 22,05 kHz, tope en 160 kbps: sin
+ *    remuestrear, pedir 192 o 320 devolvía exactamente el mismo archivo. Por
+ *    eso los perfiles altos suben a 44,1 kHz antes de codificar.
  *  - Por encima de 192 kbps la mejora sobre una fuente de 22 kHz es
- *    inapreciable; el archivo sí crece. Se ofrece igualmente porque es el
- *    ajuste habitual para archivar o editar después.
+ *    inapreciable, pero el archivo sí crece.
+ *
+ * No hay OGG, FLAC ni M4A: ninguna librería que los codifique llegó a
+ * funcionar desde un CDN sin empaquetador (libflacjs no llega a inicializar
+ * su WebAssembly), y MediaRecorder, que sí sabe Opus y AAC, solo graba en
+ * tiempo real — exportar diez minutos de audio tardaría diez minutos.
  */
 
 export const FORMATS = [
@@ -39,12 +43,28 @@ export const FORMATS = [
     sampleRate: 44100
   },
   {
-    id: "wav",
+    id: "wav-16",
     label: "WAV · PCM 16-bit",
     extension: "wav",
     kind: "wav",
-    bitrate: null,
+    bitDepth: 16,
     sampleRate: null
+  },
+  {
+    id: "wav-16-44",
+    label: "WAV · PCM 16-bit · 44.1 kHz",
+    extension: "wav",
+    kind: "wav",
+    bitDepth: 16,
+    sampleRate: 44100
+  },
+  {
+    id: "wav-24-48",
+    label: "WAV · PCM 24-bit · 48 kHz",
+    extension: "wav",
+    kind: "wav",
+    bitDepth: 24,
+    sampleRate: 48000
   }
 ];
 
