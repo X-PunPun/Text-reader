@@ -54,6 +54,35 @@
   </script>
 
   <script>
+    // Cada idioma vive en su propia URL. Si la preferencia guardada apunta a
+    // otra version, se salta antes de pintar nada: asi no se ve un destello
+    // de la pagina en ingles. Solo se redirige desde la version inglesa, que
+    // es la raiz; llegar a /es/ o /fr/ por un enlace es una eleccion
+    // explicita y se respeta.
+    (function () {
+      var codes = ["en", "es", "pt", "fr", "de", "it", "zh", "ja", "ko", "ar"];
+
+      // Expuesta para poder probarla: decide el destino, sin navegar.
+      function target(pathname, saved) {
+        if (!saved || codes.indexOf(saved) < 0 || saved === "en") return null;
+
+        var parts = pathname.replace(/index\.html$/, "").split("/").filter(Boolean);
+        var last = parts[parts.length - 1];
+        if (codes.indexOf(last) >= 0) return null; // ya se esta en una version concreta
+
+        return "/" + (parts.length ? parts.join("/") + "/" : "") + saved + "/";
+      }
+
+      window.__langTarget = target;
+
+      try {
+        var to = target(location.pathname, localStorage.getItem("textreader:lang"));
+        if (to) location.replace(to);
+      } catch (e) {}
+    })();
+  </script>
+
+  <script>
     // Aplica el tema guardado antes de pintar, para evitar el parpadeo.
     (function () {
       try {
@@ -314,16 +343,16 @@
 
     <footer class="footer">
       <nav class="lang-links" aria-label="Language versions">
-        <a href="./">English</a>
-        <a href="./es/">Español</a>
-        <a href="./pt/">Português</a>
-        <a href="./fr/">Français</a>
-        <a href="./de/">Deutsch</a>
-        <a href="./it/">Italiano</a>
-        <a href="./zh/">中文</a>
-        <a href="./ja/">日本語</a>
-        <a href="./ko/">한국어</a>
-        <a href="./ar/">العربية</a>
+        <a href="./" data-lang="en">English</a>
+        <a href="./es/" data-lang="es">Español</a>
+        <a href="./pt/" data-lang="pt">Português</a>
+        <a href="./fr/" data-lang="fr">Français</a>
+        <a href="./de/" data-lang="de">Deutsch</a>
+        <a href="./it/" data-lang="it">Italiano</a>
+        <a href="./zh/" data-lang="zh">中文</a>
+        <a href="./ja/" data-lang="ja">日本語</a>
+        <a href="./ko/" data-lang="ko">한국어</a>
+        <a href="./ar/" data-lang="ar">العربية</a>
       </nav>
       <p data-i18n="app.footer">Uses your browser's speech synthesis. Works best in Chrome, Edge and Safari.</p>
     </footer>

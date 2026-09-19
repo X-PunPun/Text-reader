@@ -77,13 +77,14 @@ The core has no browser dependencies, so it runs under Node:
 node tests/reader.test.mjs
 ```
 
-There is a second suite that drives the quiz interface on a simulated DOM —
+Two more suites run against a simulated DOM: one drives the quiz interface —
 creating questions, confirming each card, checking that the answer is only
-revealed after you confirm. It needs jsdom:
+revealed after you confirm — and another checks that switching language lands
+on the right page without looping. They need jsdom:
 
 ```
 npm install
-node tests/quiz-view.test.mjs
+npm run test:ui
 ```
 
 ## Open source

@@ -8,6 +8,7 @@ import { createReader } from "../src/core/usecases/reader.js";
 import { clampSpeedIndex, formatSpeed } from "../src/core/domain/speeds.js";
 import { createExporter } from "../src/core/usecases/exporter.js";
 import { createQuiz } from "../src/core/usecases/quiz.js";
+import { pathForLanguage, currentLanguageFrom } from "../src/ui/i18n/routing.js";
 
 const results = [];
 const asyncTests = [];
@@ -290,6 +291,35 @@ testAsync("el progreso informa de cada fragmento y del cierre", async () => {
 
   assert.equal(phases.filter((p) => p === "rendering").length, splitIntoChunks(TEXT).length);
   assert.equal(phases[phases.length - 1], "encoding");
+});
+
+/* ---------------- rutas de idioma ---------------- */
+
+const CODES = ["en", "es", "pt", "fr", "de", "it", "zh", "ja", "ko", "ar"];
+
+test("la version inglesa vive en la raiz y las demas en su carpeta", () => {
+  assert.equal(pathForLanguage("en", "/Text-reader/", CODES), "/Text-reader/");
+  assert.equal(pathForLanguage("es", "/Text-reader/", CODES), "/Text-reader/es/");
+});
+
+test("cambiar de idioma no encadena carpetas", () => {
+  assert.equal(pathForLanguage("pt", "/Text-reader/es/", CODES), "/Text-reader/pt/");
+  assert.equal(pathForLanguage("en", "/Text-reader/es/", CODES), "/Text-reader/");
+});
+
+test("funciona igual servido desde la raiz del dominio", () => {
+  assert.equal(pathForLanguage("es", "/", CODES), "/es/");
+  assert.equal(pathForLanguage("en", "/es/", CODES), "/");
+});
+
+test("tolera que la url incluya index.html", () => {
+  assert.equal(pathForLanguage("ja", "/Text-reader/ar/index.html", CODES), "/Text-reader/ja/");
+});
+
+test("reconoce en que version se esta", () => {
+  assert.equal(currentLanguageFrom("/Text-reader/", CODES), "en");
+  assert.equal(currentLanguageFrom("/Text-reader/ko/", CODES), "ko");
+  assert.equal(currentLanguageFrom("/Text-reader/ko/index.html", CODES), "ko");
 });
 
 /* ---------------- modo cuestionario ---------------- */

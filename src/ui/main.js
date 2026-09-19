@@ -9,6 +9,7 @@ import { decodeAndJoin, encodeMp3, encodeWav, resample } from "../adapters/audio
 import { FORMATS, DEFAULT_FORMAT, findFormat } from "../adapters/audio/formats.js";
 import { formatSpeed } from "../core/domain/speeds.js";
 import { createI18n } from "./i18n/i18n.js";
+import { pathForLanguage } from "./i18n/routing.js";
 import { createThemeToggle } from "./components/theme-toggle.js";
 import { createSpeedSlider } from "./components/speed-slider.js";
 import { createEditor } from "./components/editor.js";
@@ -142,6 +143,8 @@ voicePicker = createVoicePicker({
 /* ---------------- idioma ---------------- */
 
 const langSelect = el("lang-select");
+const codes = i18n.languages.map((lang) => lang.code);
+
 i18n.languages.forEach((lang) => {
   const option = document.createElement("option");
   option.value = lang.code;
@@ -149,7 +152,25 @@ i18n.languages.forEach((lang) => {
   langSelect.appendChild(option);
 });
 langSelect.value = i18n.code;
-langSelect.addEventListener("change", () => i18n.set(langSelect.value));
+
+langSelect.addEventListener("change", () => {
+  const code = langSelect.value;
+
+  // El texto descriptivo de cada versión está escrito en su HTML, no se
+  // traduce en caliente: cambiar de idioma significa ir a esa página.
+  if (code !== i18n.code) {
+    storage.set(STORAGE_KEYS.language, code);
+    window.location.assign(pathForLanguage(code, window.location.pathname, codes));
+    return;
+  }
+
+  i18n.set(code);
+});
+
+// Los enlaces del pie también son una elección de idioma, no solo un salto.
+document.querySelectorAll(".lang-links a[data-lang]").forEach((link) => {
+  link.addEventListener("click", () => storage.set(STORAGE_KEYS.language, link.dataset.lang));
+});
 
 i18n.onChange(() => {
   if (mode === "quiz") quizView.render(null);
