@@ -1,0 +1,149 @@
+.app {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* ---------- Barra superior ---------- */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.header { text-align: center; margin-bottom: 2px; }
+
+.subtitle {
+  margin: 6px 0 0;
+  color: var(--text-dim);
+  font-size: 15px;
+}
+
+/* ---------- Editor: bloque propio, separado del panel ---------- */
+.editor {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.editor-head,
+.field-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding-inline: 4px;
+}
+
+.counter { font-size: 12px; color: var(--text-dim); }
+
+.editor-surface {
+  position: relative;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--bg-input);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.editor-surface:focus-within {
+  border-color: var(--accent);
+  box-shadow: var(--shadow), 0 0 0 3px var(--accent-soft);
+}
+
+/* El espejo y el textarea deben medir exactamente igual. */
+.editor-mirror,
+.editor-input {
+  width: 100%;
+  min-height: 52vh;
+  margin: 0;
+  padding: var(--editor-pad-y) var(--editor-pad-x);
+  border: 0;
+  font-family: inherit;
+  font-size: var(--editor-font);
+  line-height: var(--editor-leading);
+  letter-spacing: normal;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  word-break: normal;
+  tab-size: 4;
+}
+
+.editor-mirror {
+  position: absolute;
+  inset: 0;
+  color: transparent;
+  pointer-events: none;
+  overflow: hidden;
+  user-select: none;
+}
+
+.editor-input {
+  position: relative;
+  display: block;
+  resize: vertical;
+  background: transparent;
+  color: var(--text);
+  overflow-y: auto;
+  outline: none;
+}
+
+.editor-input::placeholder { color: var(--text-dim); opacity: 0.8; }
+
+.editor-hint {
+  margin: 0;
+  padding-inline: 4px;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+/* ---------- Panel de controles ---------- */
+.panel {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.field { display: flex; flex-direction: column; gap: 8px; }
+.field.grow { flex: 1 1 260px; min-width: 0; }
+.field.narrow { flex: 0 1 200px; min-width: 0; }
+
+.controls-row {
+  display: flex;
+  gap: 14px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.buttons { display: flex; gap: 10px; }
+
+.footer {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.footer p { margin: 0; }
+
+@media (max-width: 620px) {
+  body { padding: 18px 12px 30px; }
+  .panel { padding: 16px; }
+  .editor-mirror, .editor-input {
+    --editor-pad-x: 16px;
+    --editor-pad-y: 16px;
+    min-height: 44vh;
+  }
+  .controls-row { flex-direction: column; align-items: stretch; }
+  .buttons { width: 100%; }
+  .btn { flex: 1; }
+  h1 { font-size: 26px; }
+}

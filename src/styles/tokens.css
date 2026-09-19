@@ -1,0 +1,95 @@
+/* Paleta neutra (negro / grafito) con acento dorado.
+   Por defecto sigue al sistema; [data-theme] lo fuerza. */
+
+:root {
+  --bg: #0d0d0e;
+  --bg-elev: #16161a;
+  --bg-input: #0a0a0c;
+  --border: #26262c;
+  --border-strong: #3a3a44;
+
+  --text: #f2eee4;
+  --text-dim: #9b968c;
+
+  --accent: #d4af37;
+  --accent-hover: #e3c25a;
+  --accent-soft: rgba(212, 175, 55, 0.14);
+
+  --hl-sentence: rgba(212, 175, 55, 0.15);
+  --hl-word: rgba(212, 175, 55, 0.42);
+
+  --btn-bg: #d4af37;
+  --btn-bg-hover: #e3c25a;
+  --btn-text: #14130f;
+
+  --thumb: #f2eee4;
+  --scroll: #3a3a44;
+  --danger: #e57373;
+
+  --radius: 16px;
+  --radius-sm: 10px;
+  --shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
+
+  --editor-pad-y: 22px;
+  --editor-pad-x: 26px;
+  --editor-font: 16px;
+  --editor-leading: 1.75;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #eceae4;
+    --bg-elev: #faf8f3;
+    --bg-input: #fdfcf8;
+    --border: #dcd7cb;
+    --border-strong: #c3bcac;
+
+    --text: #16161a;
+    --text-dim: #6b665c;
+
+    --accent: #9c7b1f;
+    --accent-hover: #866819;
+    --accent-soft: rgba(156, 123, 31, 0.12);
+
+    --hl-sentence: rgba(156, 123, 31, 0.16);
+    --hl-word: rgba(156, 123, 31, 0.34);
+
+    --btn-bg: #1c1b19;
+    --btn-bg-hover: #322f2a;
+    --btn-text: #faf8f3;
+
+    --thumb: #faf8f3;
+    --scroll: #c3bcac;
+    --danger: #b3261e;
+
+    --shadow: 0 14px 34px rgba(28, 27, 25, 0.1);
+  }
+}
+
+:root[data-theme="light"] {
+  --bg: #eceae4;
+  --bg-elev: #faf8f3;
+  --bg-input: #fdfcf8;
+  --border: #dcd7cb;
+  --border-strong: #c3bcac;
+
+  --text: #16161a;
+  --text-dim: #6b665c;
+
+  --accent: #9c7b1f;
+  --accent-hover: #866819;
+  --accent-soft: rgba(156, 123, 31, 0.12);
+
+  --hl-sentence: rgba(156, 123, 31, 0.16);
+  --hl-word: rgba(156, 123, 31, 0.34);
+
+  --btn-bg: #1c1b19;
+  --btn-bg-hover: #322f2a;
+  --btn-text: #faf8f3;
+
+  --thumb: #faf8f3;
+  --scroll: #c3bcac;
+  --danger: #b3261e;
+
+  --shadow: 0 14px 34px rgba(28, 27, 25, 0.1);
+}
