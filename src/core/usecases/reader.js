@@ -107,6 +107,13 @@ export function createReader({ speech, chunkSize = 180 }) {
         stop();
       }
     });
+
+    // Motores que sintetizan bajo demanda (modelos locales, servicios HTTP)
+    // van preparando el siguiente fragmento mientras suena este.
+    const next = chunks[index + 1];
+    if (next && typeof port.prefetch === "function") {
+      port.prefetch(next.text, { voiceId });
+    }
   }
 
   function wordLengthAt(value, at) {

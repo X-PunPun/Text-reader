@@ -24,6 +24,9 @@
  * @property {() => boolean} isAvailable
  * @property {() => Promise<VoiceInfo[]>} listVoices
  * @property {(request: SpeakRequest) => void} speak
+ * @property {(text: string, options: { voiceId: string|null }) => void} [prefetch]
+ *   Opcional. Los motores que sintetizan bajo demanda lo usan para ir
+ *   preparando el siguiente fragmento y que no haya silencios entre frases.
  * @property {() => void} pause
  * @property {() => void} resume
  * @property {() => void} cancel
