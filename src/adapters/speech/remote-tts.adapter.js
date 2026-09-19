@@ -68,6 +68,18 @@ export function createRemoteTtsAdapter(providerId, { getTemplate } = {}) {
     });
   }
 
+  /**
+   * Audio de un fragmento, sin reproducirlo. A diferencia de la
+   * reproducción, esto sí necesita que el servicio envíe cabeceras CORS.
+   */
+  async function render(text, { voiceId }) {
+    const url = provider.url(text.slice(0, provider.maxChars), voiceId, getTemplate?.());
+    if (!url) throw new Error("missing-endpoint");
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("service-down");
+    return response.blob();
+  }
+
   function pause() {
     audio?.pause();
   }
@@ -92,6 +104,7 @@ export function createRemoteTtsAdapter(providerId, { getTemplate } = {}) {
     isAvailable,
     listVoices,
     speak,
+    render,
     pause,
     resume,
     cancel

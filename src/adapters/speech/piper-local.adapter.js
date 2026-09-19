@@ -153,6 +153,12 @@ export function createPiperAdapter({ onProgress } = {}) {
     }
   }
 
+  /** Audio de un fragmento, sin reproducirlo. Lo usa la exportación. */
+  async function render(text, { voiceId }) {
+    const current = await ensureSession(voiceId);
+    return current.predict(text);
+  }
+
   async function synthesize(text, voiceId) {
     const key = cacheKey(voiceId, text);
     if (cache.has(key)) return cache.get(key);
@@ -273,6 +279,7 @@ export function createPiperAdapter({ onProgress } = {}) {
     isAvailable,
     listVoices,
     speak,
+    render,
     prefetch,
     pause,
     resume,
