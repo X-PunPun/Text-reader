@@ -126,6 +126,21 @@
     </ol>
   </aside>
 
+
+  <aside id="opensource" class="side-note">
+    <h2 class="side-note-title" data-i18n="oss.title">Open source</h2>
+    <p data-i18n="oss.body">
+      Text Reader is free software under the MIT license. Anyone can use it,
+      study it, change it and share it, for any purpose, including commercial
+      use. No account, no tracking, no ads.
+    </p>
+    <p data-i18n="oss.body2">
+      Everything runs in your browser: your text is never sent anywhere.
+    </p>
+    <a class="side-note-link" href="https://github.com/X-PunPun/Text-reader"
+       target="_blank" rel="noopener" data-i18n="oss.link">View the code on GitHub</a>
+  </aside>
+
   <main class="app">
 
     <div class="topbar">
@@ -144,8 +159,13 @@
       <p class="subtitle" data-i18n="app.subtitle">Write or paste your text and listen to it. No accounts, no limits.</p>
     </header>
 
+    <div class="mode-switch" role="group">
+      <button id="mode-reader" class="mode-btn is-active" type="button" data-i18n="mode.reader">Reader</button>
+      <button id="mode-quiz" class="mode-btn" type="button" data-i18n="mode.quiz">Quiz</button>
+    </div>
+
     <!-- Editor: bloque propio, con su propio margen y sin compartir caja con los controles -->
-    <section class="editor">
+    <section class="editor" id="editor-view">
       <div class="editor-head">
         <label for="text-input" data-i18n="label.text">Text</label>
         <span class="counter">
@@ -165,6 +185,15 @@
       </div>
 
       <p class="editor-hint" data-i18n="hint.clickSeek">While paused, click anywhere in the text to continue from that word.</p>
+    </section>
+
+    <section class="quiz" id="quiz-view" hidden>
+      <div class="editor-head">
+        <span class="quiz-progress" id="quiz-progress" data-i18n="quiz.empty">No questions yet</span>
+        <button id="quiz-edit" class="link-btn" type="button" data-i18n="quiz.edit">Edit questions</button>
+      </div>
+      <ol class="quiz-list" id="quiz-list"></ol>
+      <p class="editor-hint" data-i18n="quiz.hint">Questions are read in random order. Answer out loud, then reveal.</p>
     </section>
 
     <!-- Panel de controles -->
@@ -211,6 +240,10 @@
           <div class="select-wrap">
             <select id="format-select"></select>
           </div>
+          <button id="quiz-reveal" class="btn btn-primary" type="button" hidden>
+            <span class="icon" aria-hidden="true">✓</span>
+            <span data-i18n="quiz.reveal">Show answer</span>
+          </button>
           <button id="download-btn" class="btn btn-ghost" type="button">
             <span class="icon" aria-hidden="true">↓</span>
             <span data-i18n="btn.download">Save audio</span>
@@ -290,6 +323,28 @@
       <p data-i18n="app.footer">Uses your browser's speech synthesis. Works best in Chrome, Edge and Safari.</p>
     </footer>
   </main>
+
+
+  <dialog id="quiz-dialog" class="dialog">
+    <h2 class="dialog-title" data-i18n="quiz.title">Questions</h2>
+
+    <div id="quiz-step1">
+      <label for="quiz-count" data-i18n="quiz.howMany">How many questions?</label>
+      <input id="quiz-count" class="text-input" type="number" min="1" max="50" value="5" />
+      <div class="dialog-actions">
+        <button type="button" id="quiz-cancel" class="btn btn-ghost" data-i18n="quiz.cancel">Cancel</button>
+        <button type="button" id="quiz-next" class="btn btn-primary" data-i18n="quiz.next">Next</button>
+      </div>
+    </div>
+
+    <div id="quiz-step2" hidden>
+      <div class="quiz-fields" id="quiz-fields"></div>
+      <div class="dialog-actions">
+        <button type="button" id="quiz-back" class="btn btn-ghost" data-i18n="quiz.back">Back</button>
+        <button type="button" id="quiz-save" class="btn btn-primary" data-i18n="quiz.save">Save</button>
+      </div>
+    </div>
+  </dialog>
 
   <script type="module" src="src/ui/main.js"></script>
 

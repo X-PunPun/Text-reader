@@ -17,6 +17,21 @@ subscription, no character limit — everything runs in the browser.
   neural voices that download once and then work offline.
 - Light and dark themes, an interface in 10 languages, and a side panel
   explaining how it works.
+- A quiz mode that reads questions out loud, waits for you, and only then
+  reveals the answer.
+
+## Quiz mode
+
+Switch to **Quiz** above the text box to turn the app into a spoken flashcard
+test. You write the questions and answers once, and from then on:
+
+1. A question is read out loud and playback stops.
+2. You answer from memory, out loud or in your head.
+3. Press **Show answer** — the answer is unblurred and read back to you.
+4. It moves on to the next question automatically.
+
+Questions are shuffled on every run, so you memorise the answers instead of
+the order. Everything is stored in your browser, nothing is uploaded.
 
 ## Running it locally
 
@@ -56,6 +71,21 @@ The core has no browser dependencies, so it runs under Node:
 ```
 node tests/reader.test.mjs
 ```
+
+## Open source
+
+Text Reader is free software under the [MIT license](LICENSE). Anyone can use
+it, study it, change it and share it, for any purpose, including commercial
+use. Fork it, strip out what you don't need, rename it, ship it — no
+permission needed and no attribution required beyond keeping the license
+notice.
+
+It has no backend, no analytics and no ads. Your text stays in your browser
+and is never sent anywhere; the only network requests are the one-time
+downloads of the voice models.
+
+Contributions are welcome: open an issue or a pull request on
+[GitHub](https://github.com/X-PunPun/Text-reader).
 
 ## Notes
 
