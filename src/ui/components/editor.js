@@ -5,6 +5,11 @@
  * espejo con el mismo contenido, misma tipografía y mismas métricas. El
  * espejo pinta los fondos (frase y palabra en curso) y el textarea, con
  * fondo transparente, sigue recibiendo la escritura y el cursor.
+ *
+ * Las métricas tienen que coincidir al píxel: si el texto del espejo corta
+ * las líneas en otro punto que el del textarea, el resaltado se va
+ * desplazando. La barra de desplazamiento del textarea le roba ancho al
+ * área de texto, así que el espejo reserva ese mismo hueco.
  */
 export function createEditor({ textarea, mirror, counter, onCaretMove, onTextChange }) {
   let lastHighlight = null;
@@ -18,6 +23,13 @@ export function createEditor({ textarea, mirror, counter, onCaretMove, onTextCha
 
   function updateCounter() {
     counter.textContent = textarea.value.length.toLocaleString();
+  }
+
+  /** Iguala el ancho útil del espejo al del textarea (barra incluida). */
+  function syncMetrics() {
+    const scrollbar = textarea.offsetWidth - textarea.clientWidth;
+    const style = getComputedStyle(textarea);
+    mirror.style.paddingRight = `${parseFloat(style.paddingRight) + scrollbar}px`;
   }
 
   function syncScroll() {
@@ -52,6 +64,8 @@ export function createEditor({ textarea, mirror, counter, onCaretMove, onTextCha
       mirror.innerHTML = "";
       return;
     }
+
+    syncMetrics();
 
     const text = textarea.value;
     const { start, end, wordStart, wordEnd } = range;
@@ -104,7 +118,22 @@ export function createEditor({ textarea, mirror, counter, onCaretMove, onTextCha
     if (navigation.includes(event.key)) onCaretMove(textarea.selectionStart);
   });
 
+  // El textarea se puede redimensionar a mano y la ventana cambia de tamaño:
+  // en ambos casos varía el ajuste de línea y hay que repintar.
+  if (typeof ResizeObserver !== "undefined") {
+    new ResizeObserver(() => {
+      syncMetrics();
+      if (lastHighlight) highlight(lastHighlight);
+    }).observe(textarea);
+  }
+
+  window.addEventListener("resize", () => {
+    syncMetrics();
+    if (lastHighlight) highlight(lastHighlight);
+  });
+
   updateCounter();
+  syncMetrics();
 
   return {
     highlight,

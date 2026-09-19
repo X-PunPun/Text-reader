@@ -88,7 +88,8 @@
   resize: vertical;
   background: transparent;
   color: var(--text);
-  overflow-y: auto;
+  overflow-y: scroll;      /* hueco siempre reservado: el ajuste de linea no cambia */
+  scrollbar-gutter: stable;
   outline: none;
 }
 
