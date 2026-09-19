@@ -90,5 +90,11 @@ export default {
   "oss.title": "오픈 소스",
   "oss.body": "Text Reader는 MIT 라이선스의 자유 소프트웨어입니다. 누구나 어떤 목적으로든 사용, 연구, 수정, 공유할 수 있습니다.",
   "oss.body2": "모든 것이 브라우저에서 실행되며 텍스트는 어디로도 전송되지 않습니다. 계정도, 추적도, 광고도 없습니다.",
-  "oss.link": "GitHub에서 코드 보기"
+  "oss.link": "GitHub에서 코드 보기",
+  "quiz.done": "답변함",
+  "quiz.again": "다시 하기",
+  "quiz.manage": "질문 추가 또는 삭제",
+  "quiz.add": "질문 추가",
+  "quiz.remove": "삭제",
+  "quiz.finishedHint": "테스트 완료. 다시 살펴볼 수 있도록 모든 답이 그대로 표시됩니다."
 };

@@ -90,5 +90,11 @@ export default {
   "oss.title": "Open source",
   "oss.body": "Text Reader is free software under the MIT license. Anyone can use it, study it, change it and share it, for any purpose.",
   "oss.body2": "Everything runs in your browser: your text is never sent anywhere. No account, no tracking, no ads.",
-  "oss.link": "View the code on GitHub"
+  "oss.link": "View the code on GitHub",
+  "quiz.done": "Answered",
+  "quiz.again": "Run it again",
+  "quiz.manage": "Add or remove questions",
+  "quiz.add": "Add a question",
+  "quiz.remove": "Remove",
+  "quiz.finishedHint": "Test finished. Every answer stays visible so you can go back over them."
 };

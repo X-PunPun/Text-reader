@@ -90,5 +90,11 @@ export default {
   "oss.title": "开源",
   "oss.body": "Text Reader 是采用 MIT 许可证的自由软件。任何人都可以出于任何目的使用、研究、修改和分享它。",
   "oss.body2": "一切都在你的浏览器中运行：你的文字不会被发送到任何地方。没有账号、没有跟踪、没有广告。",
-  "oss.link": "在 GitHub 上查看代码"
+  "oss.link": "在 GitHub 上查看代码",
+  "quiz.done": "已回答",
+  "quiz.again": "再做一次",
+  "quiz.manage": "添加或删除问题",
+  "quiz.add": "添加一个问题",
+  "quiz.remove": "删除",
+  "quiz.finishedHint": "测验结束。所有答案都保留在页面上，方便你回顾。"
 };

@@ -591,3 +591,81 @@ select { cursor: pointer; }
 .quiz-field { display: flex; flex-direction: column; gap: 6px; }
 .quiz-field label { font-size: 11px; }
 .quiz-field .text-input { height: 40px; }
+
+/* ---------- Confirmación dentro de la tarjeta ---------- */
+.quiz-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.quiz-check {
+  flex: 0 0 auto;
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.quiz-confirm {
+  margin-top: 12px;
+  height: 38px;
+  padding: 0 16px;
+  font-size: 13px;
+}
+
+/* ---------- Cierre del test ---------- */
+.quiz-end {
+  padding: 16px 18px;
+  background: var(--bg-elev);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-sm);
+}
+
+.quiz-end-text {
+  margin: 0 0 12px;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.quiz-end-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* ---------- Filas del diálogo ---------- */
+.quiz-field-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.quiz-field-number {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.quiz-remove {
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.quiz-remove:hover { color: var(--danger); border-color: var(--danger); }
+
+.quiz-add { margin-top: 12px; }

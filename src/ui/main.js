@@ -84,7 +84,6 @@ function renderTransport() {
   el("download-btn").hidden = quizMode;
   el("download-btn").disabled = exporting || !exporter.canExport(registry.get(voicePicker?.engineId || "native"));
   el("format-select").closest(".field").hidden = quizMode;
-  el("quiz-reveal").hidden = !(quizMode && quiz.phase === "waiting");
 
   document.body.classList.toggle("is-reading", state !== "idle");
   editor.setLocked(state === "playing" || exporting);
@@ -229,11 +228,13 @@ const quizView = createQuizView({
     list: el("quiz-list"),
     progress: el("quiz-progress"),
     editButton: el("quiz-edit"),
+    endPanel: el("quiz-end"),
     dialog: el("quiz-dialog"),
     step1: el("quiz-step1"),
     step2: el("quiz-step2"),
     count: el("quiz-count"),
     fields: el("quiz-fields"),
+    addButton: el("quiz-add"),
     nextButton: el("quiz-next"),
     backButton: el("quiz-back"),
     saveButton: el("quiz-save"),
@@ -280,7 +281,8 @@ el("mode-quiz").addEventListener("click", () => {
   if (!quizView.hasItems) quizView.openDialog();
 });
 
-el("quiz-reveal").addEventListener("click", () => quiz.confirm());
+el("quiz-again").addEventListener("click", () => quiz.start());
+el("quiz-manage").addEventListener("click", () => quizView.openDialog());
 
 /* ---------------- exportar a archivo ---------------- */
 
