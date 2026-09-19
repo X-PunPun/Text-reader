@@ -29,7 +29,7 @@ export default {
   "status.error": "Playback error: {e}",
   "status.unsupported": "Your browser does not support speech synthesis. Try Chrome, Edge or Safari.",
   "hint.clickSeek": "Click anywhere in the text to read from that point.",
-  "hint.remote": "Public service, no account needed. It may be rate-limited or go offline.",
+  "hint.remote": "Point this at your own service or a CORS proxy. Public streamer TTS endpoints do not work from a static page.",
   "error.network": "the audio service did not respond",
   "error.autoplay-blocked": "the browser blocked autoplay, press Play again",
   "error.missing-endpoint": "no custom endpoint set",
@@ -44,5 +44,7 @@ export default {
   "error.model-load": "the voice could not be loaded",
   "error.no-opfs": "this browser cannot store voices; use Chrome or Edge over localhost or https",
   "error.playback": "the audio could not be played",
-  "error.service-down": "the service did not respond, it may be down; try the local voices"
+  "error.service-down": "the service did not respond, it may be down; try the local voices",
+  "label.allLanguages": "All languages",
+  "status.noVoicesForLang": "No voices for {lang}; showing every language."
 };

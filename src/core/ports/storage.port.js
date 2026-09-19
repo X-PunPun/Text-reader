@@ -12,5 +12,6 @@ export const STORAGE_KEYS = {
   voice: "textreader:voice",
   engine: "textreader:engine",
   speed: "textreader:speed",
-  customEndpoint: "textreader:customEndpoint"
+  customEndpoint: "textreader:customEndpoint",
+  allLanguages: "textreader:allLanguages"
 };

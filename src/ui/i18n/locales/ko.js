@@ -29,7 +29,7 @@ export default {
   "status.error": "재생 오류: {e}",
   "status.unsupported": "이 브라우저는 음성 합성을 지원하지 않습니다. Chrome, Edge 또는 Safari를 사용해 보세요.",
   "hint.clickSeek": "텍스트의 아무 곳이나 클릭하면 그 지점부터 읽습니다.",
-  "hint.remote": "계정이 필요 없는 공개 서비스입니다. 속도 제한이나 중단이 있을 수 있습니다.",
+  "hint.remote": "직접 운영하는 서비스나 CORS 프록시를 지정하세요. 스트리머용 공개 TTS 엔드포인트는 정적 페이지에서 동작하지 않습니다.",
   "error.network": "오디오 서비스가 응답하지 않았습니다",
   "error.autoplay-blocked": "브라우저가 자동 재생을 차단했습니다. 재생을 다시 누르세요",
   "error.missing-endpoint": "사용자 지정 엔드포인트가 설정되지 않았습니다",
@@ -44,5 +44,7 @@ export default {
   "error.model-load": "음성을 불러오지 못했습니다",
   "error.no-opfs": "이 브라우저는 음성을 저장할 수 없습니다. localhost 또는 https에서 Chrome이나 Edge를 사용하세요",
   "error.playback": "오디오를 재생하지 못했습니다",
-  "error.service-down": "서비스가 응답하지 않습니다. 중단되었을 수 있으니 로컬 음성을 사용해 보세요"
+  "error.service-down": "서비스가 응답하지 않습니다. 중단되었을 수 있으니 로컬 음성을 사용해 보세요",
+  "label.allLanguages": "모든 언어",
+  "status.noVoicesForLang": "{lang} 음성이 없어 모든 언어를 표시합니다."
 };

@@ -95,6 +95,7 @@ let voicePicker;
 voicePicker = createVoicePicker({
   engineSelect: el("engine-select"),
   voiceSelect: el("voice-select"),
+  allLangsCheckbox: el("all-langs"),
   customField: el("custom-field"),
   customInput: el("custom-input"),
   hint: el("engine-hint"),

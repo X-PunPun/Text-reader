@@ -29,7 +29,7 @@ export default {
   "status.error": "خطأ في التشغيل: {e}",
   "status.unsupported": "متصفحك لا يدعم تحويل النص إلى كلام. جرّب Chrome أو Edge أو Safari.",
   "hint.clickSeek": "انقر في أي موضع من النص لتبدأ القراءة من هناك.",
-  "hint.remote": "خدمة عامة بدون حساب. قد تكون محدودة أو غير متاحة أحيانًا.",
+  "hint.remote": "وجّهه إلى خدمتك الخاصة أو إلى وسيط CORS. نقاط TTS العامة الخاصة بالبث لا تعمل من صفحة ثابتة.",
   "error.network": "لم تستجب خدمة الصوت",
   "error.autoplay-blocked": "منع المتصفح التشغيل التلقائي، اضغط تشغيل مرة أخرى",
   "error.missing-endpoint": "لم يتم ضبط نقطة النهاية المخصصة",
@@ -44,5 +44,7 @@ export default {
   "error.model-load": "تعذّر تحميل الصوت",
   "error.no-opfs": "لا يستطيع هذا المتصفح تخزين الأصوات؛ استخدم Chrome أو Edge عبر localhost أو https",
   "error.playback": "تعذّر تشغيل الصوت",
-  "error.service-down": "لم تستجب الخدمة وقد تكون متوقفة؛ جرّب الأصوات المحلية"
+  "error.service-down": "لم تستجب الخدمة وقد تكون متوقفة؛ جرّب الأصوات المحلية",
+  "label.allLanguages": "كل اللغات",
+  "status.noVoicesForLang": "لا توجد أصوات للغة {lang}؛ يتم عرض كل اللغات."
 };

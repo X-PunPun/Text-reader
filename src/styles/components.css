@@ -234,3 +234,48 @@ select { cursor: pointer; }
 
 .link-btn:hover:not(:disabled) { color: var(--danger); }
 .link-btn:disabled { opacity: 0.5; cursor: progress; }
+
+/* ---------- Casilla junto a la etiqueta ---------- */
+.field-head--tight { padding-inline: 0; }
+
+.checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--text-dim);
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox:hover { color: var(--text); }
+
+.checkbox input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  background: var(--bg-input);
+  cursor: pointer;
+  position: relative;
+}
+
+.checkbox input:checked { background: var(--accent); border-color: var(--accent); }
+
+.checkbox input:checked::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 1px;
+  width: 3px;
+  height: 7px;
+  border: solid var(--bg-elev);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}

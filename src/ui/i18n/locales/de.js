@@ -29,7 +29,7 @@ export default {
   "status.error": "Wiedergabefehler: {e}",
   "status.unsupported": "Ihr Browser unterstützt keine Sprachsynthese. Versuchen Sie Chrome, Edge oder Safari.",
   "hint.clickSeek": "Klicken Sie an eine beliebige Stelle im Text, um dort zu lesen.",
-  "hint.remote": "Öffentlicher Dienst, kein Konto nötig. Kann begrenzt oder offline sein.",
+  "hint.remote": "Zeigen Sie auf Ihren eigenen Dienst oder einen CORS-Proxy. Öffentliche Streamer-TTS-Endpunkte funktionieren aus einer statischen Seite nicht.",
   "error.network": "der Audiodienst hat nicht geantwortet",
   "error.autoplay-blocked": "der Browser hat die Wiedergabe blockiert, erneut auf Abspielen drücken",
   "error.missing-endpoint": "kein eigener Endpunkt konfiguriert",
@@ -44,5 +44,7 @@ export default {
   "error.model-load": "die Stimme konnte nicht initialisiert werden",
   "error.no-opfs": "dieser Browser kann keine Stimmen speichern; nutzen Sie Chrome oder Edge über localhost oder https",
   "error.playback": "das Audio konnte nicht abgespielt werden",
-  "error.service-down": "der Dienst hat nicht geantwortet und ist womöglich offline; probieren Sie die lokalen Stimmen"
+  "error.service-down": "der Dienst hat nicht geantwortet und ist womöglich offline; probieren Sie die lokalen Stimmen",
+  "label.allLanguages": "Alle Sprachen",
+  "status.noVoicesForLang": "Keine Stimmen für {lang}; es werden alle Sprachen gezeigt."
 };

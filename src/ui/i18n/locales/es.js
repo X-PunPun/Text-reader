@@ -29,7 +29,7 @@ export default {
   "status.error": "Error al reproducir: {e}",
   "status.unsupported": "Tu navegador no soporta síntesis de voz. Prueba con Chrome, Edge o Safari.",
   "hint.clickSeek": "Haz clic en cualquier punto del texto para leer desde ahí.",
-  "hint.remote": "Servicio público, sin cuenta. Puede limitar peticiones o dejar de funcionar.",
+  "hint.remote": "Apunta a tu propio servicio o a un proxy CORS. Los endpoints públicos de TTS para streamers no funcionan desde una web estática.",
   "error.network": "el servicio de audio no respondió",
   "error.autoplay-blocked": "el navegador bloqueó la reproducción, pulsa Reproducir otra vez",
   "error.missing-endpoint": "falta configurar el endpoint personalizado",
@@ -44,5 +44,7 @@ export default {
   "error.model-load": "no se pudo cargar la voz",
   "error.no-opfs": "este navegador no puede guardar voces; usa Chrome o Edge sobre localhost o https",
   "error.playback": "no se pudo reproducir el audio",
-  "error.service-down": "el servicio no respondió, puede estar caído; prueba las voces locales"
+  "error.service-down": "el servicio no respondió, puede estar caído; prueba las voces locales",
+  "label.allLanguages": "Todos los idiomas",
+  "status.noVoicesForLang": "No hay voces para {lang}; se muestran todos los idiomas."
 };

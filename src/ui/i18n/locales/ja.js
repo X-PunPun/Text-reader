@@ -29,7 +29,7 @@ export default {
   "status.error": "再生エラー: {e}",
   "status.unsupported": "お使いのブラウザは音声合成に対応していません。Chrome、Edge、Safari をお試しください。",
   "hint.clickSeek": "テキストの任意の場所をクリックすると、そこから読み上げます。",
-  "hint.remote": "アカウント不要の公開サービスです。制限や停止の可能性があります。",
+  "hint.remote": "自分のサービスか CORS プロキシを指定してください。配信者向けの公開 TTS エンドポイントは静的ページからは利用できません。",
   "error.network": "音声サービスが応答しませんでした",
   "error.autoplay-blocked": "ブラウザが自動再生をブロックしました。もう一度再生を押してください",
   "error.missing-endpoint": "カスタムエンドポイントが未設定です",
@@ -44,5 +44,7 @@ export default {
   "error.model-load": "音声を読み込めませんでした",
   "error.no-opfs": "このブラウザは音声を保存できません。localhost または https で Chrome か Edge をお使いください",
   "error.playback": "音声を再生できませんでした",
-  "error.service-down": "サービスが応答しません。停止している可能性があります。ローカル音声をお試しください"
+  "error.service-down": "サービスが応答しません。停止している可能性があります。ローカル音声をお試しください",
+  "label.allLanguages": "すべての言語",
+  "status.noVoicesForLang": "{lang}の音声がないため、すべての言語を表示しています。"
 };

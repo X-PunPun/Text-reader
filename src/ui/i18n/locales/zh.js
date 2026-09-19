@@ -29,7 +29,7 @@ export default {
   "status.error": "播放错误：{e}",
   "status.unsupported": "你的浏览器不支持语音合成。请尝试 Chrome、Edge 或 Safari。",
   "hint.clickSeek": "点击文本中的任意位置，即可从那里开始朗读。",
-  "hint.remote": "公共服务，无需账号。可能限速或暂时不可用。",
+  "hint.remote": "请指向你自己的服务或 CORS 代理。面向主播的公共 TTS 接口无法在静态页面中使用。",
   "error.network": "音频服务无响应",
   "error.autoplay-blocked": "浏览器阻止了自动播放，请再次点击播放",
   "error.missing-endpoint": "尚未设置自定义接口",
@@ -44,5 +44,7 @@ export default {
   "error.model-load": "无法加载语音",
   "error.no-opfs": "此浏览器无法保存语音；请在 localhost 或 https 下使用 Chrome 或 Edge",
   "error.playback": "无法播放音频",
-  "error.service-down": "服务无响应，可能已下线；请改用本地语音"
+  "error.service-down": "服务无响应，可能已下线；请改用本地语音",
+  "label.allLanguages": "所有语言",
+  "status.noVoicesForLang": "没有{lang}的语音，显示全部语言。"
 };

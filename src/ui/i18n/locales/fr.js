@@ -29,7 +29,7 @@ export default {
   "status.error": "Erreur de lecture : {e}",
   "status.unsupported": "Votre navigateur ne prend pas en charge la synthèse vocale. Essayez Chrome, Edge ou Safari.",
   "hint.clickSeek": "Cliquez n'importe où dans le texte pour lire à partir de là.",
-  "hint.remote": "Service public, sans compte. Il peut limiter les requêtes ou devenir indisponible.",
+  "hint.remote": "Pointez vers votre propre service ou un proxy CORS. Les endpoints TTS publics pour streamers ne fonctionnent pas depuis une page statique.",
   "error.network": "le service audio n'a pas répondu",
   "error.autoplay-blocked": "le navigateur a bloqué la lecture, appuyez de nouveau sur Lire",
   "error.missing-endpoint": "point de terminaison personnalisé non configuré",
@@ -44,5 +44,7 @@ export default {
   "error.model-load": "la voix n'a pas pu être chargée",
   "error.no-opfs": "ce navigateur ne peut pas stocker les voix ; utilisez Chrome ou Edge en localhost ou https",
   "error.playback": "l'audio n'a pas pu être lu",
-  "error.service-down": "le service n'a pas répondu, il est peut-être hors service ; essayez les voix locales"
+  "error.service-down": "le service n'a pas répondu, il est peut-être hors service ; essayez les voix locales",
+  "label.allLanguages": "Toutes les langues",
+  "status.noVoicesForLang": "Aucune voix pour {lang} ; toutes les langues sont affichées."
 };
