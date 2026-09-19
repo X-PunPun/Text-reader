@@ -1,0 +1,17 @@
+{
+  "name": "text-reader",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Free text to speech in the browser, with offline voices and a spoken quiz mode.",
+  "license": "MIT",
+  "scripts": {
+    "test": "node tests/reader.test.mjs",
+    "test:ui": "node tests/quiz-view.test.mjs",
+    "build": "node scripts/build-pages.mjs",
+    "serve": "python3 -m http.server 8080"
+  },
+  "devDependencies": {
+    "jsdom": "^30.0.0"
+  }
+}
