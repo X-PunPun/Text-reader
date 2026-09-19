@@ -28,7 +28,7 @@ export default {
   "status.stopped": "Stopped.",
   "status.error": "Playback error: {e}",
   "status.unsupported": "Your browser does not support speech synthesis. Try Chrome, Edge or Safari.",
-  "hint.clickSeek": "Click anywhere in the text to read from that point.",
+  "hint.clickSeek": "While paused, click anywhere in the text to continue from that word.",
   "hint.remote": "Point this at your own service or a CORS proxy. Public streamer TTS endpoints do not work from a static page.",
   "error.network": "the audio service did not respond",
   "error.autoplay-blocked": "the browser blocked autoplay, press Play again",

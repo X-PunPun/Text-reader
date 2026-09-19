@@ -28,7 +28,7 @@ export default {
   "status.stopped": "Arrêté.",
   "status.error": "Erreur de lecture : {e}",
   "status.unsupported": "Votre navigateur ne prend pas en charge la synthèse vocale. Essayez Chrome, Edge ou Safari.",
-  "hint.clickSeek": "Cliquez n'importe où dans le texte pour lire à partir de là.",
+  "hint.clickSeek": "En pause, cliquez dans le texte pour continuer à partir de ce mot.",
   "hint.remote": "Pointez vers votre propre service ou un proxy CORS. Les endpoints TTS publics pour streamers ne fonctionnent pas depuis une page statique.",
   "error.network": "le service audio n'a pas répondu",
   "error.autoplay-blocked": "le navigateur a bloqué la lecture, appuyez de nouveau sur Lire",

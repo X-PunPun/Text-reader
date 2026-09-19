@@ -85,9 +85,10 @@ const editor = createEditor({
     reader.setText(value);
     caretTouched = false;
   },
-  onCaretMove: (offset) => {
-    caretTouched = true;
-    if (reader.state === "playing") reader.seekTo(offset);
+  // Mover el cursor no interrumpe la lectura: solo se tiene en cuenta al
+  // reanudar desde una pausa.
+  onCaretMove: () => {
+    if (reader.state !== "playing") caretTouched = true;
   }
 });
 
@@ -144,12 +145,14 @@ reader.on("error", ({ error }) => {
 el("play-btn").addEventListener("click", () => {
   if (reader.state === "playing") {
     reader.pause();
+    caretTouched = false; // solo cuenta lo que se mueva a partir de ahora
     setStatus("status.paused");
     return;
   }
 
   if (reader.state === "paused") {
     reader.resume(caretTouched ? { fromOffset: editor.caret } : {});
+    caretTouched = false;
     return;
   }
 
@@ -160,7 +163,8 @@ el("play-btn").addEventListener("click", () => {
   }
 
   reader.setRate(speed.value());
-  reader.play(caretTouched ? { fromOffset: editor.caret } : { fromOffset: 0 });
+  reader.play({ fromOffset: caretTouched ? editor.caret : 0 });
+  caretTouched = false;
 });
 
 el("stop-btn").addEventListener("click", () => {

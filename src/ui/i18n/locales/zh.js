@@ -28,7 +28,7 @@ export default {
   "status.stopped": "已停止。",
   "status.error": "播放错误：{e}",
   "status.unsupported": "你的浏览器不支持语音合成。请尝试 Chrome、Edge 或 Safari。",
-  "hint.clickSeek": "点击文本中的任意位置，即可从那里开始朗读。",
+  "hint.clickSeek": "暂停时，点击文本即可从该词继续朗读。",
   "hint.remote": "请指向你自己的服务或 CORS 代理。面向主播的公共 TTS 接口无法在静态页面中使用。",
   "error.network": "音频服务无响应",
   "error.autoplay-blocked": "浏览器阻止了自动播放，请再次点击播放",

@@ -28,7 +28,7 @@ export default {
   "status.stopped": "Fermato.",
   "status.error": "Errore di riproduzione: {e}",
   "status.unsupported": "Il tuo browser non supporta la sintesi vocale. Prova Chrome, Edge o Safari.",
-  "hint.clickSeek": "Clicca in un punto qualsiasi del testo per leggere da lì.",
+  "hint.clickSeek": "In pausa, clicca nel testo per continuare da quella parola.",
   "hint.remote": "Punta al tuo servizio o a un proxy CORS. Gli endpoint TTS pubblici per streamer non funzionano da una pagina statica.",
   "error.network": "il servizio audio non ha risposto",
   "error.autoplay-blocked": "il browser ha bloccato la riproduzione, premi di nuovo Riproduci",

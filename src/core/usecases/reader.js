@@ -1,4 +1,4 @@
-import { splitIntoChunks, chunkIndexAtOffset } from "../domain/chunker.js";
+import { splitIntoChunks, chunkIndexAtOffset, wordStartAt } from "../domain/chunker.js";
 
 /**
  * Caso de uso: leer un texto en voz alta.
@@ -21,6 +21,12 @@ export function createReader({ speech, chunkSize = 180 }) {
   let rate = 1;
   let voiceId = null;
   let generation = 0; // invalida callbacks de fragmentos ya cancelados
+
+  // Offset desde el que arrancar el fragmento actual. Sirve para empezar en
+  // la palabra donde está el cursor en vez de al principio de la frase; se
+  // descarta en cuanto se pasa al fragmento siguiente.
+  let cutFrom = null;
+
   const listeners = new Map();
 
   /* ---------------- eventos ---------------- */
@@ -54,10 +60,22 @@ export function createReader({ speech, chunkSize = 180 }) {
     text = typeof value === "string" ? value : "";
     chunks = splitIntoChunks(text, chunkSize);
     if (index >= chunks.length) index = 0;
+    cutFrom = null;
+  }
+
+  /** El fragmento actual, recortado si hay que empezar a media frase. */
+  function currentChunk() {
+    const chunk = chunks[index];
+    if (!chunk) return null;
+    if (cutFrom === null || cutFrom <= chunk.start || cutFrom >= chunk.end) return chunk;
+
+    const start = wordStartAt(text, cutFrom);
+    if (start >= chunk.end) return chunk;
+    return { text: text.slice(start, chunk.end), start, end: chunk.end };
   }
 
   function emitHighlight(wordStart, wordEnd) {
-    const chunk = chunks[index];
+    const chunk = currentChunk();
     if (!chunk) return;
     emit("highlight", {
       start: chunk.start,
@@ -71,8 +89,13 @@ export function createReader({ speech, chunkSize = 180 }) {
 
   /* ---------------- reproducción ---------------- */
 
+  function wordLengthAt(value, at) {
+    const match = value.slice(at).match(/^\S+/);
+    return match ? match[0].length : 0;
+  }
+
   function speakCurrent() {
-    const chunk = chunks[index];
+    const chunk = currentChunk();
     if (!chunk) {
       stop();
       return;
@@ -99,6 +122,7 @@ export function createReader({ speech, chunkSize = 180 }) {
           return;
         }
         index += 1;
+        cutFrom = null; // el recorte solo valía para el fragmento anterior
         speakCurrent();
       },
       onError: (error) => {
@@ -116,12 +140,6 @@ export function createReader({ speech, chunkSize = 180 }) {
     }
   }
 
-  function wordLengthAt(value, at) {
-    const rest = value.slice(at);
-    const match = rest.match(/^\S+/);
-    return match ? match[0].length : 0;
-  }
-
   /**
    * @param {{ fromOffset?: number }} [options] Posición del cursor en el texto.
    */
@@ -133,6 +151,7 @@ export function createReader({ speech, chunkSize = 180 }) {
 
     if (typeof options.fromOffset === "number") {
       index = chunkIndexAtOffset(chunks, options.fromOffset);
+      cutFrom = options.fromOffset;
     }
     if (index >= chunks.length) index = 0;
 
@@ -147,17 +166,17 @@ export function createReader({ speech, chunkSize = 180 }) {
     setState("paused");
   }
 
+  /**
+   * Reanuda. Con `fromOffset` no continúa donde se quedó: arranca en la
+   * palabra que hay bajo el cursor, que es lo que se espera tras hacer clic
+   * en otro punto del texto mientras estaba en pausa.
+   */
   function resume(options = {}) {
     if (state !== "paused") return;
 
-    // Si el cursor se movió a otro fragmento, se retoma desde allí.
     if (typeof options.fromOffset === "number") {
-      const target = chunkIndexAtOffset(chunks, options.fromOffset);
-      if (target !== index) {
-        index = target;
-        play();
-        return;
-      }
+      play({ fromOffset: options.fromOffset });
+      return;
     }
 
     port.resume();
@@ -169,18 +188,19 @@ export function createReader({ speech, chunkSize = 180 }) {
     generation += 1;
     port.cancel();
     index = 0;
+    cutFrom = null;
     setState("idle");
     emit("highlight", { start: null, end: null, wordStart: null, wordEnd: null, index: 0, total: chunks.length });
   }
 
-  /** Salta a la posición del cursor sin cambiar el estado de reproducción. */
+  /** Coloca la lectura en la posición indicada sin empezar a hablar. */
   function seekTo(offset) {
     if (!chunks.length) return;
-    const target = chunkIndexAtOffset(chunks, offset);
-    index = target;
+    index = chunkIndexAtOffset(chunks, offset);
+    cutFrom = offset;
 
     if (state === "playing") {
-      play();
+      play({ fromOffset: offset });
     } else if (state === "paused") {
       generation += 1;
       port.cancel();
@@ -191,7 +211,7 @@ export function createReader({ speech, chunkSize = 180 }) {
 
   function setRate(value) {
     rate = value;
-    if (state === "playing") play(); // reinicia el fragmento con la nueva velocidad
+    if (state === "playing") play(); // relee el fragmento actual a la nueva velocidad
   }
 
   function setVoice(value) {

@@ -28,7 +28,7 @@ export default {
   "status.stopped": "停止しました。",
   "status.error": "再生エラー: {e}",
   "status.unsupported": "お使いのブラウザは音声合成に対応していません。Chrome、Edge、Safari をお試しください。",
-  "hint.clickSeek": "テキストの任意の場所をクリックすると、そこから読み上げます。",
+  "hint.clickSeek": "一時停止中にテキストをクリックすると、その単語から続けて読み上げます。",
   "hint.remote": "自分のサービスか CORS プロキシを指定してください。配信者向けの公開 TTS エンドポイントは静的ページからは利用できません。",
   "error.network": "音声サービスが応答しませんでした",
   "error.autoplay-blocked": "ブラウザが自動再生をブロックしました。もう一度再生を押してください",

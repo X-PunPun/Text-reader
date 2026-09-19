@@ -28,7 +28,7 @@ export default {
   "status.stopped": "Gestoppt.",
   "status.error": "Wiedergabefehler: {e}",
   "status.unsupported": "Ihr Browser unterstützt keine Sprachsynthese. Versuchen Sie Chrome, Edge oder Safari.",
-  "hint.clickSeek": "Klicken Sie an eine beliebige Stelle im Text, um dort zu lesen.",
+  "hint.clickSeek": "Klicken Sie im pausierten Zustand in den Text, um ab diesem Wort weiterzulesen.",
   "hint.remote": "Zeigen Sie auf Ihren eigenen Dienst oder einen CORS-Proxy. Öffentliche Streamer-TTS-Endpunkte funktionieren aus einer statischen Seite nicht.",
   "error.network": "der Audiodienst hat nicht geantwortet",
   "error.autoplay-blocked": "der Browser hat die Wiedergabe blockiert, erneut auf Abspielen drücken",

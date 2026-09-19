@@ -3,7 +3,7 @@
  * Ejecutar con:  node tests/reader.test.mjs
  */
 import assert from "node:assert/strict";
-import { splitIntoChunks, chunkIndexAtOffset } from "../src/core/domain/chunker.js";
+import { splitIntoChunks, chunkIndexAtOffset, wordStartAt } from "../src/core/domain/chunker.js";
 import { createReader } from "../src/core/usecases/reader.js";
 import { clampSpeedIndex, formatSpeed } from "../src/core/domain/speeds.js";
 
@@ -170,6 +170,59 @@ test("cambiar la velocidad relee el fragmento actual, no el texto entero", () =>
   reader.setRate(1.5);
 
   assert.equal(port.spoken[port.spoken.length - 1], "Segunda frase mas larga aqui.");
+});
+
+test("el inicio de palabra se calcula desde cualquier punto del cursor", () => {
+  const line = "Hola mundo cruel";
+  assert.equal(wordStartAt(line, 0), 0);
+  assert.equal(wordStartAt(line, 7), 5);   // dentro de "mundo"
+  assert.equal(wordStartAt(line, 10), 11); // sobre el espacio: siguiente palabra
+  assert.equal(wordStartAt(line, 11), 11);
+});
+
+test("retomar desde el cursor empieza en esa palabra, no al inicio de la frase", () => {
+  const port = fakePort();
+  const reader = createReader({ speech: port });
+  reader.setText(TEXT);
+
+  // TEXT empieza por "Primera frase." — el cursor cae dentro de "frase"
+  reader.play({ fromOffset: 10 });
+  assert.equal(port.spoken[0], "frase.");
+});
+
+test("el recorte solo afecta al fragmento donde esta el cursor", () => {
+  const port = fakePort();
+  const reader = createReader({ speech: port });
+  reader.setText(TEXT);
+  reader.play({ fromOffset: 10 });
+  port.finishCurrent();
+
+  // el siguiente fragmento se lee entero
+  assert.equal(port.spoken[1], "Segunda frase mas larga aqui.");
+});
+
+test("el resaltado tambien arranca en la palabra del cursor", () => {
+  const port = fakePort();
+  const reader = createReader({ speech: port });
+  const seen = [];
+  reader.on("highlight", (r) => seen.push(r));
+  reader.setText(TEXT);
+  reader.play({ fromOffset: 10 });
+
+  const first = seen.find((r) => r.start !== null);
+  assert.equal(TEXT.slice(first.start, first.end), "frase.");
+});
+
+test("reanudar con el cursor movido no continua donde se quedo", () => {
+  const port = fakePort();
+  const reader = createReader({ speech: port });
+  reader.setText(TEXT);
+  reader.play({ fromOffset: 0 });
+  reader.pause();
+  reader.resume({ fromOffset: 23 }); // dentro del segundo fragmento
+
+  assert.equal(reader.state, "playing");
+  assert.ok(port.spoken[port.spoken.length - 1].startsWith("frase mas larga"));
 });
 
 console.log(results.join("\n"));

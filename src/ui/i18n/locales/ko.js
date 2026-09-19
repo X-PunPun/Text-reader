@@ -28,7 +28,7 @@ export default {
   "status.stopped": "정지됨.",
   "status.error": "재생 오류: {e}",
   "status.unsupported": "이 브라우저는 음성 합성을 지원하지 않습니다. Chrome, Edge 또는 Safari를 사용해 보세요.",
-  "hint.clickSeek": "텍스트의 아무 곳이나 클릭하면 그 지점부터 읽습니다.",
+  "hint.clickSeek": "일시정지 상태에서 텍스트를 클릭하면 그 단어부터 이어서 읽습니다.",
   "hint.remote": "직접 운영하는 서비스나 CORS 프록시를 지정하세요. 스트리머용 공개 TTS 엔드포인트는 정적 페이지에서 동작하지 않습니다.",
   "error.network": "오디오 서비스가 응답하지 않았습니다",
   "error.autoplay-blocked": "브라우저가 자동 재생을 차단했습니다. 재생을 다시 누르세요",

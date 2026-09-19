@@ -67,3 +67,29 @@ export function chunkIndexAtOffset(chunks, offset) {
   }
   return chunks.length - 1;
 }
+
+/**
+ * Inicio de la palabra en la que cae `offset`. Si el cursor está sobre un
+ * espacio, devuelve el inicio de la palabra siguiente.
+ *
+ * Es lo que permite que, al retomar la lectura desde el cursor, empiece
+ * exactamente en esa palabra y no al principio de la frase.
+ *
+ * @param {string} text
+ * @param {number} offset
+ * @returns {number}
+ */
+export function wordStartAt(text, offset) {
+  if (typeof text !== "string" || offset <= 0) return 0;
+
+  let i = Math.min(offset, text.length);
+
+  if (i >= text.length || /\s/.test(text[i])) {
+    // sobre un espacio o al final: saltar a la siguiente palabra
+    while (i < text.length && /\s/.test(text[i])) i += 1;
+    return i;
+  }
+
+  while (i > 0 && !/\s/.test(text[i - 1])) i -= 1;
+  return i;
+}
