@@ -38,20 +38,7 @@
   <link rel="stylesheet" href="src/styles/layout.css" />
   <link rel="stylesheet" href="src/styles/components.css" />
 
-  <!--
-    ONNX Runtime para el motor Piper. La libreria importa
-    "onnxruntime-web/wasm" como especificador desnudo; sin bundler hace falta
-    este mapa para que el navegador sepa de donde cargarlo.
-    Debe ir antes de cualquier <script type="module">.
-  -->
-  <script type="importmap">
-  {
-    "imports": {
-      "onnxruntime-web": "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.18.0/dist/esm/ort.min.js",
-      "onnxruntime-web/wasm": "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.18.0/dist/esm/ort.wasm.min.js"
-    }
-  }
-  </script>
+SEO_IMPORTMAP
 
   <script>
     // Cada idioma vive en su propia URL. Si la preferencia guardada apunta a

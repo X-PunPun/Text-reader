@@ -6,7 +6,7 @@
   "description": "Free text to speech in the browser, with offline voices and a spoken quiz mode.",
   "license": "MIT",
   "scripts": {
-    "test": "node tests/reader.test.mjs",
+    "test": "node tests/reader.test.mjs && node tests/import-map.test.mjs",
     "test:ui": "node tests/quiz-view.test.mjs && node tests/language-routing.test.mjs",
     "build": "node scripts/build-pages.mjs",
     "serve": "python3 -m http.server 8080"

@@ -33,22 +33,58 @@
   <meta name="theme-color" content="#0d0d0e" media="(prefers-color-scheme: dark)" />
   <meta name="theme-color" content="#eceae4" media="(prefers-color-scheme: light)" />
 
-  <link rel="stylesheet" href="src/styles/tokens.css" />
-  <link rel="stylesheet" href="src/styles/base.css" />
-  <link rel="stylesheet" href="src/styles/layout.css" />
-  <link rel="stylesheet" href="src/styles/components.css" />
+  <link rel="stylesheet" href="src/styles/tokens.css?v=d5976486" />
+  <link rel="stylesheet" href="src/styles/base.css?v=d5976486" />
+  <link rel="stylesheet" href="src/styles/layout.css?v=d5976486" />
+  <link rel="stylesheet" href="src/styles/components.css?v=d5976486" />
 
   <!--
-    ONNX Runtime para el motor Piper. La libreria importa
-    "onnxruntime-web/wasm" como especificador desnudo; sin bundler hace falta
-    este mapa para que el navegador sepa de donde cargarlo.
-    Debe ir antes de cualquier <script type="module">.
+    Resuelve onnxruntime-web, que la libreria de Piper importa por su
+    nombre, y fija la version de cada modulo para que el navegador no
+    sirva codigo viejo desde su cache. Debe ir antes de los modulos.
   -->
   <script type="importmap">
   {
     "imports": {
       "onnxruntime-web": "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.18.0/dist/esm/ort.min.js",
-      "onnxruntime-web/wasm": "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.18.0/dist/esm/ort.wasm.min.js"
+      "onnxruntime-web/wasm": "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.18.0/dist/esm/ort.wasm.min.js",
+      "src/adapters/audio/formats.js": "src/adapters/audio/formats.js?v=d5976486",
+      "src/adapters/audio/mp3-encoder.js": "src/adapters/audio/mp3-encoder.js?v=d5976486",
+      "src/adapters/speech/engine-registry.js": "src/adapters/speech/engine-registry.js?v=d5976486",
+      "src/adapters/speech/kokoro-local.adapter.js": "src/adapters/speech/kokoro-local.adapter.js?v=d5976486",
+      "src/adapters/speech/piper-local.adapter.js": "src/adapters/speech/piper-local.adapter.js?v=d5976486",
+      "src/adapters/speech/providers.js": "src/adapters/speech/providers.js?v=d5976486",
+      "src/adapters/speech/remote-tts.adapter.js": "src/adapters/speech/remote-tts.adapter.js?v=d5976486",
+      "src/adapters/speech/web-speech.adapter.js": "src/adapters/speech/web-speech.adapter.js?v=d5976486",
+      "src/adapters/speech/word-timeline.js": "src/adapters/speech/word-timeline.js?v=d5976486",
+      "src/adapters/storage/local-storage.adapter.js": "src/adapters/storage/local-storage.adapter.js?v=d5976486",
+      "src/core/domain/chunker.js": "src/core/domain/chunker.js?v=d5976486",
+      "src/core/domain/speeds.js": "src/core/domain/speeds.js?v=d5976486",
+      "src/core/ports/speech.port.js": "src/core/ports/speech.port.js?v=d5976486",
+      "src/core/ports/storage.port.js": "src/core/ports/storage.port.js?v=d5976486",
+      "src/core/usecases/exporter.js": "src/core/usecases/exporter.js?v=d5976486",
+      "src/core/usecases/quiz.js": "src/core/usecases/quiz.js?v=d5976486",
+      "src/core/usecases/reader.js": "src/core/usecases/reader.js?v=d5976486",
+      "src/ui/components/editor.js": "src/ui/components/editor.js?v=d5976486",
+      "src/ui/components/guide.js": "src/ui/components/guide.js?v=d5976486",
+      "src/ui/components/quiz-view.js": "src/ui/components/quiz-view.js?v=d5976486",
+      "src/ui/components/speed-slider.js": "src/ui/components/speed-slider.js?v=d5976486",
+      "src/ui/components/theme-toggle.js": "src/ui/components/theme-toggle.js?v=d5976486",
+      "src/ui/components/voice-picker.js": "src/ui/components/voice-picker.js?v=d5976486",
+      "src/ui/i18n/i18n.js": "src/ui/i18n/i18n.js?v=d5976486",
+      "src/ui/i18n/locales/ar.js": "src/ui/i18n/locales/ar.js?v=d5976486",
+      "src/ui/i18n/locales/de.js": "src/ui/i18n/locales/de.js?v=d5976486",
+      "src/ui/i18n/locales/en.js": "src/ui/i18n/locales/en.js?v=d5976486",
+      "src/ui/i18n/locales/es.js": "src/ui/i18n/locales/es.js?v=d5976486",
+      "src/ui/i18n/locales/fr.js": "src/ui/i18n/locales/fr.js?v=d5976486",
+      "src/ui/i18n/locales/index.js": "src/ui/i18n/locales/index.js?v=d5976486",
+      "src/ui/i18n/locales/it.js": "src/ui/i18n/locales/it.js?v=d5976486",
+      "src/ui/i18n/locales/ja.js": "src/ui/i18n/locales/ja.js?v=d5976486",
+      "src/ui/i18n/locales/ko.js": "src/ui/i18n/locales/ko.js?v=d5976486",
+      "src/ui/i18n/locales/pt.js": "src/ui/i18n/locales/pt.js?v=d5976486",
+      "src/ui/i18n/locales/zh.js": "src/ui/i18n/locales/zh.js?v=d5976486",
+      "src/ui/i18n/routing.js": "src/ui/i18n/routing.js?v=d5976486",
+      "src/ui/main.js": "src/ui/main.js?v=d5976486"
     }
   }
   </script>
@@ -381,7 +417,7 @@
     </div>
   </dialog>
 
-  <script type="module" src="src/ui/main.js"></script>
+  <script type="module" src="src/ui/main.js?v=d5976486"></script>
 
   <script type="application/ld+json">
   {

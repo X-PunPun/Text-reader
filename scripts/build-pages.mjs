@@ -12,7 +12,8 @@
  * se hace ahí y luego se vuelve a ejecutar este script; index.html y las
  * carpetas de idioma son salida generada, no se editan a mano.
  */
-import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, readdirSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { CONTENT, SITE } from "./seo-content.mjs";
@@ -20,6 +21,66 @@ import { CONTENT, SITE } from "./seo-content.mjs";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const template = readFileSync(resolve(root, "scripts/page.template.html"), "utf8");
 const RTL = new Set(["ar"]);
+
+const ONNX = "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.18.0/dist/esm";
+
+/** Todos los módulos y hojas de estilo del proyecto, en orden estable. */
+function collectAssets(dir = "src", found = []) {
+  readdirSync(resolve(root, dir), { withFileTypes: true })
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .forEach((entry) => {
+      const path = `${dir}/${entry.name}`;
+      if (entry.isDirectory()) collectAssets(path, found);
+      else if (/\.(js|css)$/.test(entry.name)) found.push(path);
+    });
+  return found;
+}
+
+const assets = collectAssets();
+
+/**
+ * Huella del código. Se añade a cada archivo como ?v=... para que al publicar
+ * una versión nueva el navegador no siga sirviendo la anterior desde su
+ * caché: es lo que hacía que un arreglo pareciera no haberse aplicado.
+ */
+const buildId = createHash("sha256")
+  .update(assets.map((file) => readFileSync(resolve(root, file))).join("\n"))
+  .digest("hex")
+  .slice(0, 8);
+
+/**
+ * Mapa de importaciones.
+ *
+ * Además de resolver onnxruntime-web, que la librería de Piper pide por su
+ * nombre desnudo, lleva una entrada por módulo apuntando a su versión. Los
+ * import dentro de cada módulo son relativos y no llevan la marca, así que
+ * sin esto el navegador podría mezclar un archivo nuevo con otros viejos.
+ * Las claves son relativas al documento, de modo que funciona igual servido
+ * desde la raíz o desde una subcarpeta.
+ */
+function importMap(prefix) {
+  const imports = {
+    "onnxruntime-web": `${ONNX}/ort.min.js`,
+    "onnxruntime-web/wasm": `${ONNX}/ort.wasm.min.js`
+  };
+
+  assets
+    .filter((file) => file.endsWith(".js"))
+    .forEach((file) => {
+      imports[`${prefix}${file}`] = `${prefix}${file}?v=${buildId}`;
+    });
+
+  return [
+    "  <!--",
+    "    Resuelve onnxruntime-web, que la libreria de Piper importa por su",
+    "    nombre, y fija la version de cada modulo para que el navegador no",
+    "    sirva codigo viejo desde su cache. Debe ir antes de los modulos.",
+    "  -->",
+    '  <script type="importmap">',
+    `  ${JSON.stringify({ imports }, null, 2).split("\n").join("\n  ")}`,
+    "  </script>"
+  ].join("\n");
+}
 
 const escapeAttr = (value) =>
   value.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
@@ -43,9 +104,16 @@ function build(code) {
   );
 
   // rutas relativas: las subcarpetas suben un nivel
+  const prefix = isRoot ? "" : "../";
   if (!isRoot) {
     page = page.replace(/(href|src)="src\//g, '$1="../src/');
   }
+
+  // marca de version en hojas de estilo y en el punto de entrada
+  page = page.replace(/(href|src)="((?:\.\.\/)?src\/[^"]+\.(?:css|js))"/g,
+    (match, attr, path) => `${attr}="${path}?v=${buildId}"`);
+
+  page = page.replace("SEO_IMPORTMAP", importMap(prefix));
 
   const fields = {
     SEO_CANONICAL: canonical,
@@ -140,6 +208,7 @@ writeFileSync(
   "utf8"
 );
 
+console.log(`Version ${buildId} — ${assets.length} archivos`);
 console.log(`Generadas ${written.length} páginas:`);
 written.forEach((file) => console.log(`  ${file}`));
 console.log("  sitemap.xml\n  robots.txt");
