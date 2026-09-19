@@ -33,5 +33,16 @@ export default {
   "error.network": "오디오 서비스가 응답하지 않았습니다",
   "error.autoplay-blocked": "브라우저가 자동 재생을 차단했습니다. 재생을 다시 누르세요",
   "error.missing-endpoint": "사용자 지정 엔드포인트가 설정되지 않았습니다",
-  "error.unsupported": "이 브라우저에서 사용할 수 없는 엔진입니다"
+  "error.unsupported": "이 브라우저에서 사용할 수 없는 엔진입니다",
+  "engine.piper": "로컬 AI 음성 (Piper)",
+  "status.downloading": "음성 다운로드 중 ({n} MB)… {p}%",
+  "status.synthesizing": "오디오 생성 중…",
+  "hint.piper": "음성은 한 번만 내려받아 기기에 저장됩니다. 이후에는 서비스 없이 오프라인으로 동작합니다.",
+  "btn.removeVoice": "내려받은 음성 삭제",
+  "status.voiceRemoved": "이 기기에서 음성을 삭제했습니다.",
+  "error.model-download": "음성을 내려받지 못했습니다",
+  "error.model-load": "음성을 불러오지 못했습니다",
+  "error.no-opfs": "이 브라우저는 음성을 저장할 수 없습니다. localhost 또는 https에서 Chrome이나 Edge를 사용하세요",
+  "error.playback": "오디오를 재생하지 못했습니다",
+  "error.service-down": "서비스가 응답하지 않습니다. 중단되었을 수 있으니 로컬 음성을 사용해 보세요"
 };

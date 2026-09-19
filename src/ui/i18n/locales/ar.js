@@ -33,5 +33,16 @@ export default {
   "error.network": "لم تستجب خدمة الصوت",
   "error.autoplay-blocked": "منع المتصفح التشغيل التلقائي، اضغط تشغيل مرة أخرى",
   "error.missing-endpoint": "لم يتم ضبط نقطة النهاية المخصصة",
-  "error.unsupported": "المحرك غير متاح في هذا المتصفح"
+  "error.unsupported": "المحرك غير متاح في هذا المتصفح",
+  "engine.piper": "أصوات محلية بالذكاء الاصطناعي (Piper)",
+  "status.downloading": "جارٍ تنزيل الصوت ({n} ميغابايت)… {p}%",
+  "status.synthesizing": "جارٍ توليد الصوت…",
+  "hint.piper": "يُنزَّل الصوت مرة واحدة ويبقى على جهازك. بعدها يعمل دون اتصال ودون الاعتماد على أي خدمة.",
+  "btn.removeVoice": "حذف الصوت المنزَّل",
+  "status.voiceRemoved": "تم حذف الصوت من هذا الجهاز.",
+  "error.model-download": "تعذّر تنزيل الصوت",
+  "error.model-load": "تعذّر تحميل الصوت",
+  "error.no-opfs": "لا يستطيع هذا المتصفح تخزين الأصوات؛ استخدم Chrome أو Edge عبر localhost أو https",
+  "error.playback": "تعذّر تشغيل الصوت",
+  "error.service-down": "لم تستجب الخدمة وقد تكون متوقفة؛ جرّب الأصوات المحلية"
 };

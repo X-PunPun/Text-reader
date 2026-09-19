@@ -33,5 +33,16 @@ export default {
   "error.network": "音频服务无响应",
   "error.autoplay-blocked": "浏览器阻止了自动播放，请再次点击播放",
   "error.missing-endpoint": "尚未设置自定义接口",
-  "error.unsupported": "此浏览器不支持该引擎"
+  "error.unsupported": "此浏览器不支持该引擎",
+  "engine.piper": "本地 AI 语音（Piper）",
+  "status.downloading": "正在下载语音（{n} MB）… {p}%",
+  "status.synthesizing": "正在生成音频…",
+  "hint.piper": "语音只需下载一次，之后保存在你的设备上，可离线使用，不依赖任何服务。",
+  "btn.removeVoice": "删除已下载的语音",
+  "status.voiceRemoved": "已从此设备删除该语音。",
+  "error.model-download": "无法下载语音",
+  "error.model-load": "无法加载语音",
+  "error.no-opfs": "此浏览器无法保存语音；请在 localhost 或 https 下使用 Chrome 或 Edge",
+  "error.playback": "无法播放音频",
+  "error.service-down": "服务无响应，可能已下线；请改用本地语音"
 };

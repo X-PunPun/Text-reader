@@ -209,3 +209,28 @@ select { cursor: pointer; }
 }
 
 [hidden] { display: none !important; }
+
+/* ---------- Fila de aviso del motor ---------- */
+.engine-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  padding: 2px 0;
+  font-family: inherit;
+  font-size: 12px;
+  color: var(--text-dim);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.link-btn:hover:not(:disabled) { color: var(--danger); }
+.link-btn:disabled { opacity: 0.5; cursor: progress; }

@@ -33,5 +33,16 @@ export default {
   "error.network": "the audio service did not respond",
   "error.autoplay-blocked": "the browser blocked autoplay, press Play again",
   "error.missing-endpoint": "no custom endpoint set",
-  "error.unsupported": "engine not available in this browser"
+  "error.unsupported": "engine not available in this browser",
+  "engine.piper": "Local AI voices (Piper)",
+  "status.downloading": "Downloading voice ({n} MB)... {p}%",
+  "status.synthesizing": "Generating audio...",
+  "hint.piper": "The voice downloads once and stays on your device. After that it works offline, with no service involved.",
+  "btn.removeVoice": "Delete downloaded voice",
+  "status.voiceRemoved": "Voice deleted from this device.",
+  "error.model-download": "the voice could not be downloaded",
+  "error.model-load": "the voice could not be loaded",
+  "error.no-opfs": "this browser cannot store voices; use Chrome or Edge over localhost or https",
+  "error.playback": "the audio could not be played",
+  "error.service-down": "the service did not respond, it may be down; try the local voices"
 };

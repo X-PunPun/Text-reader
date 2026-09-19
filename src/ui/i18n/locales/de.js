@@ -33,5 +33,16 @@ export default {
   "error.network": "der Audiodienst hat nicht geantwortet",
   "error.autoplay-blocked": "der Browser hat die Wiedergabe blockiert, erneut auf Abspielen drücken",
   "error.missing-endpoint": "kein eigener Endpunkt konfiguriert",
-  "error.unsupported": "Engine in diesem Browser nicht verfügbar"
+  "error.unsupported": "Engine in diesem Browser nicht verfügbar",
+  "engine.piper": "Lokale KI-Stimmen (Piper)",
+  "status.downloading": "Stimme wird geladen ({n} MB)... {p}%",
+  "status.synthesizing": "Audio wird erzeugt...",
+  "hint.piper": "Die Stimme wird einmal heruntergeladen und bleibt auf Ihrem Gerät. Danach läuft alles offline, ohne Dienst.",
+  "btn.removeVoice": "Geladene Stimme löschen",
+  "status.voiceRemoved": "Stimme von diesem Gerät gelöscht.",
+  "error.model-download": "die Stimme konnte nicht geladen werden",
+  "error.model-load": "die Stimme konnte nicht initialisiert werden",
+  "error.no-opfs": "dieser Browser kann keine Stimmen speichern; nutzen Sie Chrome oder Edge über localhost oder https",
+  "error.playback": "das Audio konnte nicht abgespielt werden",
+  "error.service-down": "der Dienst hat nicht geantwortet und ist womöglich offline; probieren Sie die lokalen Stimmen"
 };

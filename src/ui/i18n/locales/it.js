@@ -33,5 +33,16 @@ export default {
   "error.network": "il servizio audio non ha risposto",
   "error.autoplay-blocked": "il browser ha bloccato la riproduzione, premi di nuovo Riproduci",
   "error.missing-endpoint": "endpoint personalizzato non configurato",
-  "error.unsupported": "motore non disponibile in questo browser"
+  "error.unsupported": "motore non disponibile in questo browser",
+  "engine.piper": "Voci locali con IA (Piper)",
+  "status.downloading": "Download della voce ({n} MB)... {p}%",
+  "status.synthesizing": "Generazione dell'audio...",
+  "hint.piper": "La voce si scarica una sola volta e resta sul tuo dispositivo. Poi funziona offline, senza alcun servizio.",
+  "btn.removeVoice": "Elimina voce scaricata",
+  "status.voiceRemoved": "Voce eliminata da questo dispositivo.",
+  "error.model-download": "non è stato possibile scaricare la voce",
+  "error.model-load": "non è stato possibile caricare la voce",
+  "error.no-opfs": "questo browser non può memorizzare le voci; usa Chrome o Edge su localhost o https",
+  "error.playback": "non è stato possibile riprodurre l'audio",
+  "error.service-down": "il servizio non ha risposto, potrebbe essere offline; prova le voci locali"
 };

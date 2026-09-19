@@ -103,9 +103,14 @@
           placeholder="https://my-server/tts?q={text}&voice={voice}" />
       </div>
 
-      <p class="hint" id="engine-hint" data-i18n="hint.remote" hidden>
-        Public service, no account needed. It may be rate-limited or go offline.
-      </p>
+      <div class="engine-row">
+        <p class="hint" id="engine-hint" data-i18n="hint.remote" hidden>
+          Public service, no account needed. It may be rate-limited or go offline.
+        </p>
+        <button id="remove-voice-btn" class="link-btn" type="button" data-i18n="btn.removeVoice" hidden>
+          Delete downloaded voice
+        </button>
+      </div>
 
       <div class="field speed-field">
         <div class="field-head">

@@ -19,7 +19,15 @@ const el = (id) => document.getElementById(id);
 const storage = createLocalStorageAdapter();
 const i18n = createI18n({ storage });
 const registry = createEngineRegistry({
-  getTemplate: () => storage.get(STORAGE_KEYS.customEndpoint, "")
+  getTemplate: () => storage.get(STORAGE_KEYS.customEndpoint, ""),
+  onDownloadProgress: ({ percent, phase }) => {
+    if (phase === "synthesizing") {
+      setStatus("status.synthesizing");
+      return;
+    }
+    const size = voicePicker?.currentVoice?.sizeMb ?? "?";
+    setStatus("status.downloading", { n: size, p: percent ?? 0 });
+  }
 });
 
 const reader = createReader({
@@ -83,12 +91,14 @@ const editor = createEditor({
   }
 });
 
-const voicePicker = createVoicePicker({
+let voicePicker;
+voicePicker = createVoicePicker({
   engineSelect: el("engine-select"),
   voiceSelect: el("voice-select"),
   customField: el("custom-field"),
   customInput: el("custom-input"),
   hint: el("engine-hint"),
+  removeBtn: el("remove-voice-btn"),
   registry,
   storage,
   i18n,

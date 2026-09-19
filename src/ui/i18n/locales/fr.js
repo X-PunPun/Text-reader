@@ -33,5 +33,16 @@ export default {
   "error.network": "le service audio n'a pas répondu",
   "error.autoplay-blocked": "le navigateur a bloqué la lecture, appuyez de nouveau sur Lire",
   "error.missing-endpoint": "point de terminaison personnalisé non configuré",
-  "error.unsupported": "moteur non disponible dans ce navigateur"
+  "error.unsupported": "moteur non disponible dans ce navigateur",
+  "engine.piper": "Voix locales avec IA (Piper)",
+  "status.downloading": "Téléchargement de la voix ({n} Mo)... {p}%",
+  "status.synthesizing": "Génération de l'audio...",
+  "hint.piper": "La voix est téléchargée une seule fois et reste sur votre appareil. Ensuite tout fonctionne hors ligne, sans aucun service.",
+  "btn.removeVoice": "Supprimer la voix téléchargée",
+  "status.voiceRemoved": "Voix supprimée de cet appareil.",
+  "error.model-download": "la voix n'a pas pu être téléchargée",
+  "error.model-load": "la voix n'a pas pu être chargée",
+  "error.no-opfs": "ce navigateur ne peut pas stocker les voix ; utilisez Chrome ou Edge en localhost ou https",
+  "error.playback": "l'audio n'a pas pu être lu",
+  "error.service-down": "le service n'a pas répondu, il est peut-être hors service ; essayez les voix locales"
 };

@@ -33,5 +33,16 @@ export default {
   "error.network": "音声サービスが応答しませんでした",
   "error.autoplay-blocked": "ブラウザが自動再生をブロックしました。もう一度再生を押してください",
   "error.missing-endpoint": "カスタムエンドポイントが未設定です",
-  "error.unsupported": "このブラウザでは利用できないエンジンです"
+  "error.unsupported": "このブラウザでは利用できないエンジンです",
+  "engine.piper": "ローカル AI 音声（Piper）",
+  "status.downloading": "音声をダウンロード中（{n} MB）… {p}%",
+  "status.synthesizing": "音声を生成中…",
+  "hint.piper": "音声は一度だけダウンロードされ、端末に保存されます。以降はオフラインで動作し、サービスに依存しません。",
+  "btn.removeVoice": "ダウンロードした音声を削除",
+  "status.voiceRemoved": "この端末から音声を削除しました。",
+  "error.model-download": "音声をダウンロードできませんでした",
+  "error.model-load": "音声を読み込めませんでした",
+  "error.no-opfs": "このブラウザは音声を保存できません。localhost または https で Chrome か Edge をお使いください",
+  "error.playback": "音声を再生できませんでした",
+  "error.service-down": "サービスが応答しません。停止している可能性があります。ローカル音声をお試しください"
 };
