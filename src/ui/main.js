@@ -3,6 +3,8 @@ import { createEngineRegistry } from "../adapters/speech/engine-registry.js";
 import { STORAGE_KEYS } from "../core/ports/storage.port.js";
 import { createReader } from "../core/usecases/reader.js";
 import { createExporter } from "../core/usecases/exporter.js";
+import { createQuiz } from "../core/usecases/quiz.js";
+import { createQuizView } from "./components/quiz-view.js";
 import { decodeAndJoin, encodeMp3, encodeWav, resample } from "../adapters/audio/mp3-encoder.js";
 import { FORMATS, DEFAULT_FORMAT, findFormat } from "../adapters/audio/formats.js";
 import { formatSpeed } from "../core/domain/speeds.js";
@@ -51,6 +53,7 @@ const reader = createReader({
 let status = { key: "status.ready", vars: null, error: false };
 let caretTouched = false;
 let exporting = false;
+let mode = storage.get(STORAGE_KEYS.mode, "reader") === "quiz" ? "quiz" : "reader";
 
 /* ---------------- estado visible ---------------- */
 
@@ -75,8 +78,14 @@ function renderTransport() {
   el("play-icon").textContent = state === "playing" ? "❚❚" : "▶";
   el("play-label").textContent =
     state === "playing" ? i18n.t("btn.pause") : state === "paused" ? i18n.t("btn.resume") : i18n.t("btn.play");
-  el("stop-btn").disabled = state === "idle";
+  const quizMode = mode === "quiz";
+
+  el("stop-btn").disabled = quizMode ? quiz.phase === "idle" : state === "idle";
+  el("download-btn").hidden = quizMode;
   el("download-btn").disabled = exporting || !exporter.canExport(registry.get(voicePicker?.engineId || "native"));
+  el("format-select").closest(".field").hidden = quizMode;
+  el("quiz-reveal").hidden = !(quizMode && quiz.phase === "waiting");
+
   document.body.classList.toggle("is-reading", state !== "idle");
   editor.setLocked(state === "playing" || exporting);
 }
@@ -144,6 +153,7 @@ langSelect.value = i18n.code;
 langSelect.addEventListener("change", () => i18n.set(langSelect.value));
 
 i18n.onChange(() => {
+  if (mode === "quiz") quizView.render(null);
   voicePicker.retranslate();
   renderTransport();
   renderStatus();
@@ -157,6 +167,7 @@ reader.on("state", renderTransport);
 reader.on("highlight", (range) => editor.highlight(range));
 
 reader.on("progress", ({ index, total }) => {
+  if (mode === "quiz") return; // el cuestionario lleva su propio marcador
   setStatus("status.playing", { i: index + 1, n: total, s: formatSpeed(speed.value()) });
 });
 
@@ -165,6 +176,19 @@ reader.on("error", ({ error }) => {
 });
 
 el("play-btn").addEventListener("click", () => {
+  if (mode === "quiz") {
+    if (reader.state === "playing") {
+      reader.pause();
+      setStatus("status.paused");
+    } else if (reader.state === "paused") {
+      reader.resume();
+    } else if (!quiz.start()) {
+      setStatus("quiz.needQuestions", null, true);
+      quizView.openDialog();
+    }
+    return;
+  }
+
   if (reader.state === "playing") {
     reader.pause();
     caretTouched = false; // solo cuenta lo que se mueva a partir de ahora
@@ -195,6 +219,68 @@ el("stop-btn").addEventListener("click", () => {
   editor.clear();
   setStatus("status.stopped");
 });
+
+/* ---------------- modo cuestionario ---------------- */
+
+const quiz = createQuiz({ reader });
+
+const quizView = createQuizView({
+  elements: {
+    list: el("quiz-list"),
+    progress: el("quiz-progress"),
+    editButton: el("quiz-edit"),
+    dialog: el("quiz-dialog"),
+    step1: el("quiz-step1"),
+    step2: el("quiz-step2"),
+    count: el("quiz-count"),
+    fields: el("quiz-fields"),
+    nextButton: el("quiz-next"),
+    backButton: el("quiz-back"),
+    saveButton: el("quiz-save"),
+    cancelButton: el("quiz-cancel")
+  },
+  storage,
+  i18n,
+  quiz,
+  onItemsChange: () => renderTransport()
+});
+
+quiz.on((state) => {
+  quizView.render(state);
+  renderTransport();
+  if (state.phase === "finished") setStatus("quiz.finished");
+});
+
+function setMode(next) {
+  mode = next;
+  storage.set(STORAGE_KEYS.mode, next);
+
+  reader.stop();
+  quiz.stop();
+
+  el("mode-reader").classList.toggle("is-active", next === "reader");
+  el("mode-quiz").classList.toggle("is-active", next === "quiz");
+  el("editor-view").hidden = next === "quiz";
+  el("quiz-view").hidden = next !== "quiz";
+
+  if (next === "quiz") {
+    quizView.render(null);
+    setStatus("status.ready");
+  } else {
+    reader.setText(editor.value);
+  }
+  renderTransport();
+}
+
+el("mode-reader").addEventListener("click", () => setMode("reader"));
+
+el("mode-quiz").addEventListener("click", () => {
+  setMode("quiz");
+  // Sin preguntas, lo primero que hace falta es escribirlas.
+  if (!quizView.hasItems) quizView.openDialog();
+});
+
+el("quiz-reveal").addEventListener("click", () => quiz.confirm());
 
 /* ---------------- exportar a archivo ---------------- */
 
@@ -300,5 +386,5 @@ window.addEventListener("beforeunload", () => registry.cancelAll());
 
 i18n.apply();
 reader.setText(editor.value);
-renderTransport();
+setMode(mode);
 voicePicker.loadVoices();

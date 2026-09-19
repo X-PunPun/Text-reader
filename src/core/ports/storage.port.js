@@ -15,5 +15,7 @@ export const STORAGE_KEYS = {
   customEndpoint: "textreader:customEndpoint",
   allLanguages: "textreader:allLanguages",
   format: "textreader:format",
-  guide: "textreader:guide"
+  guide: "textreader:guide",
+  quiz: "textreader:quiz",
+  mode: "textreader:mode"
 };
