@@ -49,5 +49,11 @@ export default {
   "status.noVoicesForLang": "لا توجد أصوات للغة {lang}؛ يتم عرض كل اللغات.",
   "engine.kokoro": "أصوات محلية بالذكاء الاصطناعي (Kokoro، الإنجليزية)",
   "hint.kokoro": "نموذج واحد بحجم 86 ميغابايت يضم 28 صوتًا إنجليزيًا. أكثر طبيعية من Piper لكنه أبطأ (نحو 4 ثوانٍ للجملة).",
-  "status.preparing": "جارٍ تحضير نموذج الصوت، قد يستغرق ذلك دقيقة…"
+  "status.preparing": "جارٍ تحضير نموذج الصوت، قد يستغرق ذلك دقيقة…",
+  "btn.download": "حفظ الصوت",
+  "status.rendering": "جارٍ توليد الصوت {i} من {n}…",
+  "status.encoding": "جارٍ ترميز الملف… {p}%",
+  "status.exported": "تم الحفظ باسم {name}",
+  "error.engine-cannot-export": "محرك المتصفح لا يستطيع حفظ الصوت؛ اختر صوتًا محليًا",
+  "error.no-text": "لا يوجد نص لحفظه"
 };

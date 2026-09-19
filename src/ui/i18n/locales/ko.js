@@ -49,5 +49,11 @@ export default {
   "status.noVoicesForLang": "{lang} 음성이 없어 모든 언어를 표시합니다.",
   "engine.kokoro": "로컬 AI 음성 (Kokoro, 영어)",
   "hint.kokoro": "86 MB 모델 하나에 영어 음성 28종. Piper보다 자연스럽지만 느립니다(문장당 약 4초).",
-  "status.preparing": "음성 모델을 준비하는 중입니다. 1분 정도 걸릴 수 있습니다…"
+  "status.preparing": "음성 모델을 준비하는 중입니다. 1분 정도 걸릴 수 있습니다…",
+  "btn.download": "오디오 저장",
+  "status.rendering": "오디오 생성 중 {i} / {n}…",
+  "status.encoding": "파일 인코딩 중… {p}%",
+  "status.exported": "{name}(으)로 저장했습니다",
+  "error.engine-cannot-export": "브라우저 엔진은 오디오를 저장할 수 없습니다. 로컬 음성을 선택하세요",
+  "error.no-text": "저장할 텍스트가 없습니다"
 };

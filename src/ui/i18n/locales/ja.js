@@ -49,5 +49,11 @@ export default {
   "status.noVoicesForLang": "{lang}の音声がないため、すべての言語を表示しています。",
   "engine.kokoro": "ローカル AI 音声（Kokoro、英語）",
   "hint.kokoro": "86 MB のモデル 1 つに英語音声が 28 種類。Piper より自然ですが低速です（1 文あたり約 4 秒）。",
-  "status.preparing": "音声モデルを準備しています。1 分ほどかかる場合があります…"
+  "status.preparing": "音声モデルを準備しています。1 分ほどかかる場合があります…",
+  "btn.download": "音声を保存",
+  "status.rendering": "音声を生成中 {i} / {n}…",
+  "status.encoding": "ファイルをエンコード中… {p}%",
+  "status.exported": "{name} として保存しました",
+  "error.engine-cannot-export": "ブラウザのエンジンでは音声を保存できません。ローカル音声を選んでください",
+  "error.no-text": "保存するテキストがありません"
 };

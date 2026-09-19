@@ -49,5 +49,11 @@ export default {
   "status.noVoicesForLang": "No voices for {lang}; showing every language.",
   "engine.kokoro": "Local AI voices (Kokoro, English)",
   "hint.kokoro": "One 86 MB model with 28 English voices. More natural than Piper but slower (~4 s per sentence).",
-  "status.preparing": "Preparing voice model, this may take a minute..."
+  "status.preparing": "Preparing voice model, this may take a minute...",
+  "btn.download": "Save audio",
+  "status.rendering": "Generating audio {i} of {n}...",
+  "status.encoding": "Encoding file... {p}%",
+  "status.exported": "Saved as {name}",
+  "error.engine-cannot-export": "the browser engine cannot save audio; pick a local voice",
+  "error.no-text": "there is no text to save"
 };

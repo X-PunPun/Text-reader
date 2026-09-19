@@ -6,8 +6,11 @@ import assert from "node:assert/strict";
 import { splitIntoChunks, chunkIndexAtOffset, wordStartAt } from "../src/core/domain/chunker.js";
 import { createReader } from "../src/core/usecases/reader.js";
 import { clampSpeedIndex, formatSpeed } from "../src/core/domain/speeds.js";
+import { createExporter } from "../src/core/usecases/exporter.js";
 
 const results = [];
+const asyncTests = [];
+
 function test(name, fn) {
   try {
     fn();
@@ -224,6 +227,71 @@ test("reanudar con el cursor movido no continua donde se quedo", () => {
   assert.equal(reader.state, "playing");
   assert.ok(port.spoken[port.spoken.length - 1].startsWith("frase mas larga"));
 });
+
+/* ---------------- exportacion a archivo ---------------- */
+
+function testAsync(name, fn) {
+  asyncTests.push(
+    fn().then(
+      () => results.push(`  ok   ${name}`),
+      (error) => {
+        results.push(`  FAIL ${name}\n       ${error.message}`);
+        process.exitCode = 1;
+      }
+    )
+  );
+}
+
+testAsync("exportar recorre todos los fragmentos y los junta en un archivo", async () => {
+  const rendered = [];
+  const port = {
+    id: "fake",
+    render: async (text) => { rendered.push(text); return `audio:${text}`; }
+  };
+  const exporter = createExporter({
+    encode: async (blobs) => ({ blob: blobs.join("|"), extension: "mp3" })
+  });
+
+  const out = await exporter.exportAudio({ port, text: TEXT, voiceId: "v" });
+
+  assert.deepEqual(rendered, splitIntoChunks(TEXT).map((c) => c.text));
+  assert.equal(out.extension, "mp3");
+  assert.equal(out.blob.split("|").length, rendered.length);
+});
+
+testAsync("un motor sin render no puede exportar", async () => {
+  const exporter = createExporter({ encode: async () => ({}) });
+  assert.equal(exporter.canExport({ id: "native" }), false);
+  await assert.rejects(
+    () => exporter.exportAudio({ port: { id: "native" }, text: TEXT }),
+    /engine-cannot-export/
+  );
+});
+
+testAsync("exportar sin texto avisa en lugar de generar un archivo vacio", async () => {
+  const exporter = createExporter({ encode: async () => ({}) });
+  await assert.rejects(
+    () => exporter.exportAudio({ port: { id: "f", render: async () => "x" }, text: "   " }),
+    /no-text/
+  );
+});
+
+testAsync("el progreso informa de cada fragmento y del cierre", async () => {
+  const phases = [];
+  const port = { id: "f", render: async () => "x" };
+  const exporter = createExporter({ encode: async () => ({ blob: "x", extension: "mp3" }) });
+
+  await exporter.exportAudio({
+    port,
+    text: TEXT,
+    onProgress: ({ phase }) => phases.push(phase)
+  });
+
+  assert.equal(phases.filter((p) => p === "rendering").length, splitIntoChunks(TEXT).length);
+  assert.equal(phases[phases.length - 1], "encoding");
+});
+
+await Promise.all(asyncTests);
 
 console.log(results.join("\n"));
 console.log(process.exitCode ? "\nHay pruebas fallidas." : `\n${results.length} pruebas correctas.`);

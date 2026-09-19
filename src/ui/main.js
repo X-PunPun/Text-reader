@@ -2,6 +2,8 @@ import { createLocalStorageAdapter } from "../adapters/storage/local-storage.ada
 import { createEngineRegistry } from "../adapters/speech/engine-registry.js";
 import { STORAGE_KEYS } from "../core/ports/storage.port.js";
 import { createReader } from "../core/usecases/reader.js";
+import { createExporter } from "../core/usecases/exporter.js";
+import { decodeAndJoin, encodeMp3, encodeWav } from "../adapters/audio/mp3-encoder.js";
 import { formatSpeed } from "../core/domain/speeds.js";
 import { createI18n } from "./i18n/i18n.js";
 import { createThemeToggle } from "./components/theme-toggle.js";
@@ -46,6 +48,7 @@ const reader = createReader({
 
 let status = { key: "status.ready", vars: null, error: false };
 let caretTouched = false;
+let exporting = false;
 
 /* ---------------- estado visible ---------------- */
 
@@ -71,8 +74,9 @@ function renderTransport() {
   el("play-label").textContent =
     state === "playing" ? i18n.t("btn.pause") : state === "paused" ? i18n.t("btn.resume") : i18n.t("btn.play");
   el("stop-btn").disabled = state === "idle";
+  el("download-btn").disabled = exporting || !exporter.canExport(registry.get(voicePicker?.engineId || "native"));
   document.body.classList.toggle("is-reading", state !== "idle");
-  editor.setLocked(state === "playing");
+  editor.setLocked(state === "playing" || exporting);
 }
 
 /* ---------------- componentes ---------------- */
@@ -115,7 +119,10 @@ voicePicker = createVoicePicker({
   registry,
   storage,
   i18n,
-  onEngineChange: (port) => reader.setEngine(port),
+  onEngineChange: (port) => {
+    reader.setEngine(port);
+    renderTransport(); // el motor del navegador no puede exportar audio
+  },
   onVoiceChange: (voiceId) => reader.setVoice(voiceId),
   onStatus: setStatus
 });
@@ -183,6 +190,81 @@ el("stop-btn").addEventListener("click", () => {
   caretTouched = false;
   editor.clear();
   setStatus("status.stopped");
+});
+
+/* ---------------- exportar a archivo ---------------- */
+
+const exporter = createExporter({
+  encode: async (blobs) => {
+    const track = await decodeAndJoin(blobs);
+    try {
+      const blob = await encodeMp3(track, (percent) => setStatus("status.encoding", { p: percent }));
+      return { blob, extension: "mp3" };
+    } catch (error) {
+      // Sin el codificador MP3 se entrega WAV: pesa más pero suena igual.
+      return { blob: encodeWav(track), extension: "wav" };
+    }
+  }
+});
+
+function fileNameFrom(text, extension) {
+  const slug = text
+    .trim()
+    .slice(0, 40)
+    .replace(/\s+/g, "-")
+    .replace(/[^\p{L}\p{N}-]/gu, "")
+    .toLowerCase();
+  return `${slug || "text-reader"}.${extension}`;
+}
+
+function saveBlob(blob, name) {
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = name;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 10000);
+}
+
+el("download-btn").addEventListener("click", async () => {
+  const port = registry.get(voicePicker.engineId);
+
+  if (!exporter.canExport(port)) {
+    setStatus("status.error", { e: i18n.t("error.engine-cannot-export") }, true);
+    return;
+  }
+  if (!editor.value.trim()) {
+    setStatus("status.noText", null, true);
+    editor.focus();
+    return;
+  }
+
+  reader.stop();
+  exporting = true;
+  renderTransport();
+
+  try {
+    const { blob, extension } = await exporter.exportAudio({
+      port,
+      text: editor.value,
+      voiceId: voicePicker.voiceId,
+      onProgress: ({ done, total, phase }) => {
+        if (phase === "rendering") setStatus("status.rendering", { i: done + 1, n: total });
+      }
+    });
+
+    const name = fileNameFrom(editor.value, extension);
+    saveBlob(blob, name);
+    setStatus("status.exported", { name });
+  } catch (error) {
+    const code = String(error?.message || "");
+    setStatus("status.error", { e: describeError(code) }, true);
+  } finally {
+    exporting = false;
+    renderTransport();
+  }
 });
 
 window.addEventListener("beforeunload", () => registry.cancelAll());

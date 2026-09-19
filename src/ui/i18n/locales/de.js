@@ -49,5 +49,11 @@ export default {
   "status.noVoicesForLang": "Keine Stimmen für {lang}; es werden alle Sprachen gezeigt.",
   "engine.kokoro": "Lokale KI-Stimmen (Kokoro, Englisch)",
   "hint.kokoro": "Ein einziges 86-MB-Modell mit 28 englischen Stimmen. Natürlicher als Piper, aber langsamer (ca. 4 s pro Satz).",
-  "status.preparing": "Sprachmodell wird vorbereitet, das kann eine Minute dauern..."
+  "status.preparing": "Sprachmodell wird vorbereitet, das kann eine Minute dauern...",
+  "btn.download": "Audio speichern",
+  "status.rendering": "Audio {i} von {n} wird erzeugt...",
+  "status.encoding": "Datei wird kodiert... {p}%",
+  "status.exported": "Gespeichert als {name}",
+  "error.engine-cannot-export": "die Browser-Engine kann kein Audio speichern; wählen Sie eine lokale Stimme",
+  "error.no-text": "es gibt keinen Text zum Speichern"
 };
