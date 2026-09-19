@@ -7,11 +7,11 @@
   -webkit-box-decoration-break: clone;
 }
 
+/* El texto real vive en el textarea, justo encima: el espejo solo aporta el
+   fondo, por eso su propio texto va en transparente. Los dos tonos son
+   sólidos para que se distingan sin lavar la letra. */
 .hl-sentence { background: var(--hl-sentence); }
-
-/* La palabra en curso se pinta en sólido: el texto real queda encima, en el
-   textarea, así que aquí se le da el color de contraste para que se lea. */
-.hl-word { background: var(--hl-word); color: var(--hl-word-text); }
+.hl-word { background: var(--hl-word); }
 
 /* ---------- Botones ---------- */
 .btn {
@@ -281,4 +281,13 @@ select { cursor: pointer; }
   border: solid var(--bg-elev);
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
+}
+
+/* Durante la lectura el texto no se puede mover ni seleccionar: un clic
+   accidental cambiaría el punto desde el que se retoma. */
+.editor-input.is-locked {
+  user-select: none;
+  -webkit-user-select: none;
+  caret-color: transparent;
+  cursor: default;
 }

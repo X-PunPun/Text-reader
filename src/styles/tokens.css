@@ -15,9 +15,8 @@
   --accent-hover: #e3c25a;
   --accent-soft: rgba(212, 175, 55, 0.14);
 
-  --hl-sentence: rgba(212, 175, 55, 0.30);
-  --hl-word: #d4af37;
-  --hl-word-text: #14130f;
+  --hl-sentence: #3a3215;   /* sólido: el texto claro de encima sigue legible */
+  --hl-word: #8a6d1a;
 
   --btn-bg: #d4af37;
   --btn-bg-hover: #e3c25a;
@@ -52,9 +51,8 @@
     --accent-hover: #866819;
     --accent-soft: rgba(156, 123, 31, 0.12);
 
-    --hl-sentence: rgba(214, 178, 74, 0.55);
-    --hl-word: #b98f1d;
-    --hl-word-text: #fdfcf8;
+    --hl-sentence: #f5e6b0;   /* sólido, sobre texto casi negro */
+    --hl-word: #e0b93a;
 
     --btn-bg: #1c1b19;
     --btn-bg-hover: #322f2a;
@@ -82,9 +80,8 @@
   --accent-hover: #866819;
   --accent-soft: rgba(156, 123, 31, 0.12);
 
-  --hl-sentence: rgba(214, 178, 74, 0.55);
-  --hl-word: #b98f1d;
-  --hl-word-text: #fdfcf8;
+  --hl-sentence: #f5e6b0;
+  --hl-word: #e0b93a;
 
   --btn-bg: #1c1b19;
   --btn-bg-hover: #322f2a;
