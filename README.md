@@ -11,10 +11,12 @@ subscription, no character limit — everything runs in the browser.
   spoken.
 - Pause and click anywhere in the text to continue from that word.
 - Playback speed in fixed steps, from 0.25x to 2.5x.
-- Saves the whole reading as an MP3 file.
+- Saves the whole reading as a file: MP3 at three bitrates, or WAV at
+  16 and 24 bits.
 - Three voice engines: your operating system's voices, and two sets of
   neural voices that download once and then work offline.
-- Light and dark themes, and an interface available in 10 languages.
+- Light and dark themes, an interface in 10 languages, and a side panel
+  explaining how it works.
 
 ## Running it locally
 
