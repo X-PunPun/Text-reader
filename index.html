@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Text Reader</title>
+
+  <link rel="stylesheet" href="src/styles/tokens.css" />
+  <link rel="stylesheet" href="src/styles/base.css" />
+  <link rel="stylesheet" href="src/styles/layout.css" />
+  <link rel="stylesheet" href="src/styles/components.css" />
+
+  <script>
+    // Aplica el tema guardado antes de pintar, para evitar el parpadeo.
+    (function () {
+      try {
+        var t = localStorage.getItem("textreader:theme");
+        if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <main class="app">
+
+    <div class="topbar">
+      <div class="select-wrap select-wrap--sm">
+        <label class="sr-only" for="lang-select" data-i18n="label.language">Language</label>
+        <select id="lang-select" class="select-sm" data-i18n-title="label.language" title="Language"></select>
+      </div>
+
+      <button id="theme-btn" class="icon-btn" type="button" data-i18n-title="label.theme" title="Toggle theme">
+        <span id="theme-icon" aria-hidden="true">☾</span>
+      </button>
+    </div>
+
+    <header class="header">
+      <h1>Text Reader</h1>
+      <p class="subtitle" data-i18n="app.subtitle">Write or paste your text and listen to it. No accounts, no limits.</p>
+    </header>
+
+    <!-- Editor: bloque propio, con su propio margen y sin compartir caja con los controles -->
+    <section class="editor">
+      <div class="editor-head">
+        <label for="text-input" data-i18n="label.text">Text</label>
+        <span class="counter">
+          <span id="char-count">0</span>
+          <span data-i18n="counter.characters">characters</span>
+        </span>
+      </div>
+
+      <div class="editor-surface">
+        <div id="editor-mirror" class="editor-mirror" aria-hidden="true"></div>
+        <textarea
+          id="text-input"
+          class="editor-input"
+          data-i18n-placeholder="placeholder.text"
+          placeholder="Write or paste here the text you want to hear..."
+          spellcheck="false"></textarea>
+      </div>
+
+      <p class="editor-hint" data-i18n="hint.clickSeek">Click anywhere in the text to read from that point.</p>
+    </section>
+
+    <!-- Panel de controles -->
+    <section class="panel">
+      <div class="controls-row">
+        <div class="field narrow">
+          <label for="engine-select" data-i18n="label.engine">Engine</label>
+          <div class="select-wrap">
+            <select id="engine-select"></select>
+          </div>
+        </div>
+
+        <div class="field grow">
+          <label for="voice-select" data-i18n="label.voice">Voice</label>
+          <div class="select-wrap">
+            <select id="voice-select">
+              <option data-i18n="select.loading">Loading voices...</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="buttons">
+          <button id="play-btn" class="btn btn-primary" type="button">
+            <span class="icon" id="play-icon" aria-hidden="true">▶</span>
+            <span id="play-label" data-i18n="btn.play">Play</span>
+          </button>
+          <button id="stop-btn" class="btn btn-ghost" type="button" disabled>
+            <span class="icon" aria-hidden="true">■</span>
+            <span data-i18n="btn.stop">Stop</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="field" id="custom-field" hidden>
+        <label for="custom-input" data-i18n="label.customUrl">Custom endpoint</label>
+        <input
+          id="custom-input"
+          class="text-input"
+          type="url"
+          data-i18n-placeholder="placeholder.customUrl"
+          placeholder="https://my-server/tts?q={text}&voice={voice}" />
+      </div>
+
+      <p class="hint" id="engine-hint" data-i18n="hint.remote" hidden>
+        Public service, no account needed. It may be rate-limited or go offline.
+      </p>
+
+      <div class="field speed-field">
+        <div class="field-head">
+          <label for="speed-range" data-i18n="label.speed">Reading speed</label>
+          <span class="speed-badge" id="speed-badge">1.0x</span>
+        </div>
+        <input id="speed-range" class="speed-range" type="range" min="0" max="8" step="1" value="3" />
+        <div class="speed-marks" id="speed-marks"></div>
+      </div>
+
+      <p class="status" id="status" data-i18n="status.ready" role="status">Ready.</p>
+    </section>
+
+    <footer class="footer">
+      <p data-i18n="app.footer">Uses your browser's speech synthesis. Works best in Chrome, Edge and Safari.</p>
+    </footer>
+  </main>
+
+  <script type="module" src="src/ui/main.js"></script>
+</body>
+</html>
