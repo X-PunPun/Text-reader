@@ -27,8 +27,13 @@ test. You write the questions and answers once, and from then on:
 
 1. A question is read out loud and playback stops.
 2. You answer from memory, out loud or in your head.
-3. Press **Show answer** — the answer is unblurred and read back to you.
+3. Press **Show answer** on that card — the answer is unblurred and read back
+   to you.
 4. It moves on to the next question automatically.
+
+Cards never disappear: the ones you already answered stay on screen with the
+answer visible, so you can look back over them at any point. When the run
+ends you can repeat it, or add and remove questions.
 
 Questions are shuffled on every run, so you memorise the answers instead of
 the order. Everything is stored in your browser, nothing is uploaded.
@@ -70,6 +75,15 @@ The core has no browser dependencies, so it runs under Node:
 
 ```
 node tests/reader.test.mjs
+```
+
+There is a second suite that drives the quiz interface on a simulated DOM —
+creating questions, confirming each card, checking that the answer is only
+revealed after you confirm. It needs jsdom:
+
+```
+npm install
+node tests/quiz-view.test.mjs
 ```
 
 ## Open source

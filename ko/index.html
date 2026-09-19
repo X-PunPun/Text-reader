@@ -193,6 +193,15 @@
         <button id="quiz-edit" class="link-btn" type="button" data-i18n="quiz.edit">Edit questions</button>
       </div>
       <ol class="quiz-list" id="quiz-list"></ol>
+
+      <div class="quiz-end" id="quiz-end" hidden>
+        <p class="quiz-end-text" data-i18n="quiz.finishedHint">Test finished. Every answer stays visible so you can go back over them.</p>
+        <div class="quiz-end-actions">
+          <button id="quiz-again" class="btn btn-primary" type="button" data-i18n="quiz.again">Run it again</button>
+          <button id="quiz-manage" class="btn btn-ghost" type="button" data-i18n="quiz.manage">Add or remove questions</button>
+        </div>
+      </div>
+
       <p class="editor-hint" data-i18n="quiz.hint">Questions are read in random order. Answer out loud, then reveal.</p>
     </section>
 
@@ -240,10 +249,6 @@
           <div class="select-wrap">
             <select id="format-select"></select>
           </div>
-          <button id="quiz-reveal" class="btn btn-primary" type="button" hidden>
-            <span class="icon" aria-hidden="true">✓</span>
-            <span data-i18n="quiz.reveal">Show answer</span>
-          </button>
           <button id="download-btn" class="btn btn-ghost" type="button">
             <span class="icon" aria-hidden="true">↓</span>
             <span data-i18n="btn.download">Save audio</span>
@@ -339,6 +344,7 @@
 
     <div id="quiz-step2" hidden>
       <div class="quiz-fields" id="quiz-fields"></div>
+      <button type="button" id="quiz-add" class="link-btn quiz-add" data-i18n="quiz.add">Add a question</button>
       <div class="dialog-actions">
         <button type="button" id="quiz-back" class="btn btn-ghost" data-i18n="quiz.back">Back</button>
         <button type="button" id="quiz-save" class="btn btn-primary" data-i18n="quiz.save">Save</button>
