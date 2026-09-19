@@ -42,31 +42,57 @@ node tests/reader.test.mjs
 
 | Motor | Cuenta / API key | Conexión | Notas |
 |---|---|---|---|
-| **Navegador** (`native`) | No | No necesita | Voces del sistema operativo. Predeterminado y el único que resalta la palabra exacta. |
-| **Piper local** (`piper`) | No | Solo la primera vez | Modelos neuronales que se descargan una vez y quedan guardados en el dispositivo. Después funciona sin conexión. |
-| StreamElements | No | Sí | Endpoint público no oficial. Inestable: puede estar caído. |
-| Google Translate TTS | No | Sí | Endpoint público no oficial, ~200 caracteres por petición. |
-| Custom endpoint | Depende | Sí | Pega la URL de tu propio servicio, con `{text}` y `{voice}`. |
+| **Navegador** (`native`) | No | No necesita | Voces del sistema operativo. Predeterminado y el único que resalta la palabra exacta. En Brave o Chromium sin voces instaladas habrá muy pocas. |
+| **Piper local** (`piper`) | No | Solo la primera vez | 124 voces neuronales en más de 30 idiomas. Se descargan una vez y quedan en el dispositivo. Unos 0,4 s por frase. |
+| Custom endpoint | Depende | Sí | Tu propio servicio, con `{text}` y `{voice}` como marcadores. |
+
+### Por qué no hay servicios públicos de TTS
+
+El proyecto llegó a incluir StreamElements y el endpoint de Google Translate.
+Se retiraron en septiembre de 2026 tras comprobar, desde la propia página
+publicada, que ninguno funciona:
+
+- **StreamElements** dejó de responder (hay reportes públicos de la caída).
+- **Google Translate TTS** rechaza las peticiones con *Referer* de otro sitio.
+- **Streamlabs Polly** no envía cabeceras CORS, así que el navegador bloquea
+  la respuesta antes de que llegue al código.
+
+El patrón se repite: estos servicios están pensados para llamarse desde un bot
+o un servidor, no desde el navegador de un visitante. Desde una web estática no
+hay forma de usarlos sin un intermediario. Si quieres uno, levanta un proxy
+mínimo que añada `Access-Control-Allow-Origin` y apúntale con *Custom endpoint*.
 
 ### Voces locales (Piper)
 
-La opción recomendada cuando las voces del sistema no bastan y no se quiere
-depender de ningún servicio. Al elegir una voz por primera vez se descarga su
-modelo (unos 20–80 MB) desde Hugging Face y se guarda en el **OPFS** del
-navegador; a partir de ahí la síntesis ocurre en tu equipo.
+La alternativa real, y la recomendada cuando el sistema trae pocas voces. Al
+elegir una voz por primera vez se descarga su modelo (20–110 MB) desde Hugging
+Face y se guarda en el **OPFS** del navegador; a partir de ahí la síntesis
+ocurre en tu equipo, sin red y sin servicio que pueda caerse.
 
-- Las voces ya descargadas aparecen marcadas con `✓`; las demás muestran su tamaño.
+- Voz descargada: `✓`. Voz por descargar: su tamaño en MB.
 - *Delete downloaded voice* borra el modelo del dispositivo.
-- Hay voces en español, inglés, portugués, francés, alemán, italiano, chino,
-  árabe, ruso y una veintena de idiomas más. **No hay japonés ni coreano**: para
-  esos dos sigue siendo mejor el motor del navegador.
-- Necesita un contexto seguro (`localhost` o `https`) y un navegador con OPFS
-  (Chrome o Edge actuales; Firefox y Safari pueden no funcionar).
-- Mientras suena una frase se va sintetizando la siguiente, para que no haya
-  silencios entre medias.
+- Español (España y México), inglés, portugués, francés, alemán, italiano,
+  chino, árabe, ruso, catalán, neerlandés y una veintena más.
+  **No hay japonés ni coreano**: para esos dos, motor del navegador.
+- Requiere contexto seguro (`localhost` o `https`) y OPFS: Chrome, Edge o Brave
+  actuales.
+- Mientras suena una frase se sintetiza la siguiente, así que no hay silencios.
 
-Librería usada: [`@mintplex-labs/piper-tts-web`](https://github.com/Mintplex-Labs/piper-tts-web)
-(MIT), cargada desde jsDelivr solo cuando se selecciona este motor.
+**Detalle de implementación.** La librería importa `onnxruntime-web/wasm` como
+especificador desnudo y da por hecho que hay un bundler. Como aquí no lo hay,
+`index.html` incluye un *import map* que resuelve ese nombre, y el adaptador
+fija `wasmPaths` a la misma versión de ONNX Runtime y `numThreads = 1`, porque
+los hilos de WebAssembly necesitan cabeceras COOP/COEP que GitHub Pages no
+permite configurar. Sin esas tres piezas el motor falla con *no available
+backend found*.
+
+Librería: [`@mintplex-labs/piper-tts-web`](https://github.com/Mintplex-Labs/piper-tts-web) (MIT).
+
+### Selección de voces por idioma
+
+El desplegable muestra solo las voces del idioma elegido para la página. La
+casilla **All languages** enseña el resto, y si para ese idioma no hay ninguna
+voz se muestran todas avisando de ello.
 
 ## Arquitectura
 
