@@ -27,8 +27,8 @@ export function createPiperAdapter({ onProgress } = {}) {
   let catalog = null;            // catálogo de voces de la librería
   let session = null;            // sesión de inferencia activa
   let sessionVoice = null;
-  const cache = new Map();       // texto -> objectURL ya sintetizado
-  const pending = new Map();     // texto -> promesa en curso
+  const cache = new Map();       // "voz|texto" -> objectURL ya sintetizado
+  const pending = new Map();     // "voz|texto" -> promesa en curso
   let active = false;
 
   function isAvailable() {
@@ -87,6 +87,14 @@ export function createPiperAdapter({ onProgress } = {}) {
 
     if (session && sessionVoice === id) return session;
 
+    // TtsSession guarda una única instancia estática y create() la reutiliza
+    // aunque se le pida otra voz. Sin este reinicio solo sonaba la primera
+    // voz elegida y no había forma de cambiar sin recargar la página.
+    api.TtsSession._instance = null;
+    session = null;
+    sessionVoice = null;
+    clearCache();
+
     const stored = new Set(await api.stored());
     if (!stored.has(id)) {
       // Primera vez con esta voz: se descarga el modelo y queda guardado.
@@ -104,6 +112,16 @@ export function createPiperAdapter({ onProgress } = {}) {
     return session;
   }
 
+  function cacheKey(voiceId, text) {
+    return `${bareId(voiceId)}|${text}`;
+  }
+
+  function clearCache() {
+    cache.forEach((url) => URL.revokeObjectURL(url));
+    cache.clear();
+    pending.clear();
+  }
+
   function trimCache() {
     while (cache.size > CACHE_LIMIT) {
       const oldest = cache.keys().next().value;
@@ -113,30 +131,33 @@ export function createPiperAdapter({ onProgress } = {}) {
   }
 
   async function synthesize(text, voiceId) {
-    if (cache.has(text)) return cache.get(text);
-    if (pending.has(text)) return pending.get(text);
+    const key = cacheKey(voiceId, text);
+    if (cache.has(key)) return cache.get(key);
+    if (pending.has(key)) return pending.get(key);
 
     const job = (async () => {
       const current = await ensureSession(voiceId);
       onProgress?.({ phase: "synthesizing" });
       const blob = await current.predict(text);
       const url = URL.createObjectURL(blob);
-      cache.set(text, url);
+      cache.set(key, url);
       trimCache();
       return url;
     })();
 
-    pending.set(text, job);
+    pending.set(key, job);
     try {
       return await job;
     } finally {
-      pending.delete(text);
+      pending.delete(key);
     }
   }
 
   /** Va preparando el siguiente fragmento mientras suena el actual. */
   function prefetch(text, { voiceId }) {
-    if (!isAvailable() || cache.has(text) || pending.has(text)) return;
+    if (!isAvailable()) return;
+    const key = cacheKey(voiceId, text);
+    if (cache.has(key) || pending.has(key)) return;
     synthesize(text, voiceId).catch(() => {});
   }
 
@@ -191,11 +212,11 @@ export function createPiperAdapter({ onProgress } = {}) {
     const id = bareId(voiceId);
     await api.remove(id);
     if (sessionVoice === id) {
+      api.TtsSession._instance = null;
       session = null;
       sessionVoice = null;
     }
-    cache.forEach((url) => URL.revokeObjectURL(url));
-    cache.clear();
+    clearCache();
   }
 
   async function storedVoices() {
