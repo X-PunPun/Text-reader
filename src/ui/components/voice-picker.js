@@ -103,8 +103,9 @@ export function createVoicePicker({
       hint.hidden = true;
       return;
     }
+    const keys = { piper: "hint.piper", kokoro: "hint.kokoro" };
     hint.hidden = false;
-    hint.dataset.i18n = engineId === "piper" ? "hint.piper" : "hint.remote";
+    hint.dataset.i18n = keys[engineId] || "hint.remote";
     hint.textContent = i18n.t(hint.dataset.i18n);
   }
 
@@ -229,8 +230,39 @@ export function createVoicePicker({
 
   fillEngines();
 
+  /**
+   * Vuelve a comprobar qué voces están ya en el dispositivo y repinta las
+   * marcas, sin tocar la selección actual. Se llama al terminar una descarga
+   * para que la voz quede utilizable sin recargar la página.
+   */
+  async function refreshDownloaded() {
+    const port = registry.get(engineSelect.value);
+    if (!allVoices.length) return;
+
+    if (typeof port.storedVoices === "function") {
+      const stored = new Set(await port.storedVoices());
+      allVoices.forEach((voice) => { voice.downloaded = stored.has(voice.id); });
+    } else if (typeof port.listVoices === "function") {
+      const fresh = await port.listVoices();
+      const byId = new Map(fresh.map((voice) => [voice.id, voice]));
+      allVoices.forEach((voice) => {
+        const updated = byId.get(voice.id);
+        if (updated) {
+          voice.downloaded = updated.downloaded;
+          voice.sizeMb = updated.sizeMb;
+        }
+      });
+    }
+
+    const keep = voiceSelect.value;
+    renderVoices();
+    if (keep && shown.some((voice) => voice.id === keep)) voiceSelect.value = keep;
+    paintRemove();
+  }
+
   return {
     loadVoices,
+    refreshDownloaded,
     /** Al cambiar el idioma de la página cambia también el filtro de voces. */
     retranslate: () => {
       fillEngines();

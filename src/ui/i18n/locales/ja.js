@@ -46,5 +46,8 @@ export default {
   "error.playback": "音声を再生できませんでした",
   "error.service-down": "サービスが応答しません。停止している可能性があります。ローカル音声をお試しください",
   "label.allLanguages": "すべての言語",
-  "status.noVoicesForLang": "{lang}の音声がないため、すべての言語を表示しています。"
+  "status.noVoicesForLang": "{lang}の音声がないため、すべての言語を表示しています。",
+  "engine.kokoro": "ローカル AI 音声（Kokoro、英語）",
+  "hint.kokoro": "86 MB のモデル 1 つに英語音声が 28 種類。Piper より自然ですが低速です（1 文あたり約 4 秒）。",
+  "status.preparing": "音声モデルを準備しています。1 分ほどかかる場合があります…"
 };

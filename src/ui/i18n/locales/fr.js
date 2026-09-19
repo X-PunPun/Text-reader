@@ -46,5 +46,8 @@ export default {
   "error.playback": "l'audio n'a pas pu être lu",
   "error.service-down": "le service n'a pas répondu, il est peut-être hors service ; essayez les voix locales",
   "label.allLanguages": "Toutes les langues",
-  "status.noVoicesForLang": "Aucune voix pour {lang} ; toutes les langues sont affichées."
+  "status.noVoicesForLang": "Aucune voix pour {lang} ; toutes les langues sont affichées.",
+  "engine.kokoro": "Voix locales avec IA (Kokoro, anglais)",
+  "hint.kokoro": "Un seul modèle de 86 Mo avec 28 voix anglaises. Plus naturel que Piper mais plus lent (environ 4 s par phrase).",
+  "status.preparing": "Préparation du modèle vocal, cela peut prendre une minute..."
 };

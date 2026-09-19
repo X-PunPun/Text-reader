@@ -46,5 +46,8 @@ export default {
   "error.playback": "the audio could not be played",
   "error.service-down": "the service did not respond, it may be down; try the local voices",
   "label.allLanguages": "All languages",
-  "status.noVoicesForLang": "No voices for {lang}; showing every language."
+  "status.noVoicesForLang": "No voices for {lang}; showing every language.",
+  "engine.kokoro": "Local AI voices (Kokoro, English)",
+  "hint.kokoro": "One 86 MB model with 28 English voices. More natural than Piper but slower (~4 s per sentence).",
+  "status.preparing": "Preparing voice model, this may take a minute..."
 };

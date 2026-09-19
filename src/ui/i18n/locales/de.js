@@ -46,5 +46,8 @@ export default {
   "error.playback": "das Audio konnte nicht abgespielt werden",
   "error.service-down": "der Dienst hat nicht geantwortet und ist womöglich offline; probieren Sie die lokalen Stimmen",
   "label.allLanguages": "Alle Sprachen",
-  "status.noVoicesForLang": "Keine Stimmen für {lang}; es werden alle Sprachen gezeigt."
+  "status.noVoicesForLang": "Keine Stimmen für {lang}; es werden alle Sprachen gezeigt.",
+  "engine.kokoro": "Lokale KI-Stimmen (Kokoro, Englisch)",
+  "hint.kokoro": "Ein einziges 86-MB-Modell mit 28 englischen Stimmen. Natürlicher als Piper, aber langsamer (ca. 4 s pro Satz).",
+  "status.preparing": "Sprachmodell wird vorbereitet, das kann eine Minute dauern..."
 };

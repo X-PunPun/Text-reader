@@ -25,8 +25,18 @@ const registry = createEngineRegistry({
       setStatus("status.synthesizing");
       return;
     }
+    if (phase === "downloaded") {
+      // La voz ya está en el dispositivo: se repinta la lista para que quede
+      // marcada y utilizable sin recargar la página.
+      voicePicker?.refreshDownloaded();
+      return;
+    }
+    if (percent === null || percent === undefined) {
+      setStatus("status.preparing");
+      return;
+    }
     const size = voicePicker?.currentVoice?.sizeMb ?? "?";
-    setStatus("status.downloading", { n: size, p: percent ?? 0 });
+    setStatus("status.downloading", { n: size, p: percent });
   }
 });
 
@@ -62,6 +72,7 @@ function renderTransport() {
     state === "playing" ? i18n.t("btn.pause") : state === "paused" ? i18n.t("btn.resume") : i18n.t("btn.play");
   el("stop-btn").disabled = state === "idle";
   document.body.classList.toggle("is-reading", state !== "idle");
+  editor.setLocked(state === "playing");
 }
 
 /* ---------------- componentes ---------------- */

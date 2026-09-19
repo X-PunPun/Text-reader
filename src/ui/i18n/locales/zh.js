@@ -46,5 +46,8 @@ export default {
   "error.playback": "无法播放音频",
   "error.service-down": "服务无响应，可能已下线；请改用本地语音",
   "label.allLanguages": "所有语言",
-  "status.noVoicesForLang": "没有{lang}的语音，显示全部语言。"
+  "status.noVoicesForLang": "没有{lang}的语音，显示全部语言。",
+  "engine.kokoro": "本地 AI 语音（Kokoro，英语）",
+  "hint.kokoro": "单个 86 MB 模型，含 28 个英语语音。比 Piper 更自然但更慢（每句约 4 秒）。",
+  "status.preparing": "正在准备语音模型，可能需要一分钟…"
 };
