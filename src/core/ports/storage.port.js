@@ -13,5 +13,6 @@ export const STORAGE_KEYS = {
   engine: "textreader:engine",
   speed: "textreader:speed",
   customEndpoint: "textreader:customEndpoint",
-  allLanguages: "textreader:allLanguages"
+  allLanguages: "textreader:allLanguages",
+  format: "textreader:format"
 };

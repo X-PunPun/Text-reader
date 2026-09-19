@@ -55,5 +55,6 @@ export default {
   "status.encoding": "Datei wird kodiert... {p}%",
   "status.exported": "Gespeichert als {name}",
   "error.engine-cannot-export": "die Browser-Engine kann kein Audio speichern; wählen Sie eine lokale Stimme",
-  "error.no-text": "es gibt keinen Text zum Speichern"
+  "error.no-text": "es gibt keinen Text zum Speichern",
+  "label.format": "Downloadformat"
 };

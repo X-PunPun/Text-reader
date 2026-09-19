@@ -55,5 +55,6 @@ export default {
   "status.encoding": "파일 인코딩 중… {p}%",
   "status.exported": "{name}(으)로 저장했습니다",
   "error.engine-cannot-export": "브라우저 엔진은 오디오를 저장할 수 없습니다. 로컬 음성을 선택하세요",
-  "error.no-text": "저장할 텍스트가 없습니다"
+  "error.no-text": "저장할 텍스트가 없습니다",
+  "label.format": "다운로드 형식"
 };

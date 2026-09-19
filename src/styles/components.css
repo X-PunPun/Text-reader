@@ -291,3 +291,17 @@ select { cursor: pointer; }
   caret-color: transparent;
   cursor: default;
 }
+
+/* ---------- Fila de descarga: formato + boton ---------- */
+.export-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.export-row .select-wrap { flex: 1 1 auto; min-width: 0; }
+.export-row .btn { flex: 0 0 auto; }
+
+@media (max-width: 620px) {
+  .export-row { flex-direction: column; align-items: stretch; }
+}

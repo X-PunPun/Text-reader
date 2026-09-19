@@ -55,5 +55,6 @@ export default {
   "status.encoding": "Encoding file... {p}%",
   "status.exported": "Saved as {name}",
   "error.engine-cannot-export": "the browser engine cannot save audio; pick a local voice",
-  "error.no-text": "there is no text to save"
+  "error.no-text": "there is no text to save",
+  "label.format": "Download format"
 };

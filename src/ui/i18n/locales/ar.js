@@ -55,5 +55,6 @@ export default {
   "status.encoding": "جارٍ ترميز الملف… {p}%",
   "status.exported": "تم الحفظ باسم {name}",
   "error.engine-cannot-export": "محرك المتصفح لا يستطيع حفظ الصوت؛ اختر صوتًا محليًا",
-  "error.no-text": "لا يوجد نص لحفظه"
+  "error.no-text": "لا يوجد نص لحفظه",
+  "label.format": "صيغة التنزيل"
 };

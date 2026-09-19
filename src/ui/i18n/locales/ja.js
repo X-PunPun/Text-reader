@@ -55,5 +55,6 @@ export default {
   "status.encoding": "ファイルをエンコード中… {p}%",
   "status.exported": "{name} として保存しました",
   "error.engine-cannot-export": "ブラウザのエンジンでは音声を保存できません。ローカル音声を選んでください",
-  "error.no-text": "保存するテキストがありません"
+  "error.no-text": "保存するテキストがありません",
+  "label.format": "ダウンロード形式"
 };

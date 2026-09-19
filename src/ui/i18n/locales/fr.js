@@ -55,5 +55,6 @@ export default {
   "status.encoding": "Encodage du fichier... {p}%",
   "status.exported": "Enregistré sous {name}",
   "error.engine-cannot-export": "le moteur du navigateur ne peut pas enregistrer l'audio ; choisissez une voix locale",
-  "error.no-text": "il n'y a pas de texte à enregistrer"
+  "error.no-text": "il n'y a pas de texte à enregistrer",
+  "label.format": "Format de téléchargement"
 };

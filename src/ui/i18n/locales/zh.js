@@ -55,5 +55,6 @@ export default {
   "status.encoding": "正在编码文件… {p}%",
   "status.exported": "已保存为 {name}",
   "error.engine-cannot-export": "浏览器引擎无法保存音频，请选择本地语音",
-  "error.no-text": "没有可保存的文本"
+  "error.no-text": "没有可保存的文本",
+  "label.format": "下载格式"
 };

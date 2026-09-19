@@ -8,7 +8,6 @@
  */
 
 const LAME_URL = "https://cdn.jsdelivr.net/npm/@breezystack/lamejs@1.2.7/+esm";
-const BITRATE_KBPS = 128;
 const SAMPLES_PER_FRAME = 1152;
 
 /** Convierte los blobs de audio en una sola pista mono de muestras Float32. */
@@ -40,6 +39,32 @@ export async function decodeAndJoin(blobs) {
   }
 }
 
+/**
+ * Cambia la frecuencia de muestreo de la pista.
+ *
+ * Hace falta para los perfiles de alta calidad: a 22,05 kHz el MP3 no puede
+ * pasar de 160 kbps, así que sin esto pedir 320 devolvía el mismo archivo
+ * que pedir 192.
+ */
+export async function resample(track, targetRate) {
+  if (!targetRate || targetRate === track.sampleRate) return track;
+
+  const Offline = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+  const length = Math.ceil((track.samples.length * targetRate) / track.sampleRate);
+  const context = new Offline(1, length, targetRate);
+
+  const buffer = context.createBuffer(1, track.samples.length, track.sampleRate);
+  buffer.copyToChannel(track.samples, 0);
+
+  const source = context.createBufferSource();
+  source.buffer = buffer;
+  source.connect(context.destination);
+  source.start();
+
+  const rendered = await context.startRendering();
+  return { samples: rendered.getChannelData(0), sampleRate: rendered.sampleRate };
+}
+
 function toInt16(samples) {
   const pcm = new Int16Array(samples.length);
   for (let i = 0; i < samples.length; i += 1) {
@@ -49,10 +74,15 @@ function toInt16(samples) {
   return pcm;
 }
 
-/** @returns {Promise<Blob>} MP3 mono. */
-export async function encodeMp3({ samples, sampleRate }, onProgress) {
+/**
+ * @param {{ samples: Float32Array, sampleRate: number }} track
+ * @param {number} bitrate kbps
+ * @returns {Promise<Blob>} MP3 mono.
+ */
+export async function encodeMp3(track, bitrate, onProgress) {
+  const { samples, sampleRate } = track;
   const { Mp3Encoder } = await import(/* @vite-ignore */ LAME_URL);
-  const encoder = new Mp3Encoder(1, sampleRate, BITRATE_KBPS);
+  const encoder = new Mp3Encoder(1, sampleRate, bitrate);
   const pcm = toInt16(samples);
   const parts = [];
 

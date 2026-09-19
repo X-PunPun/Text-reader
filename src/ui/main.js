@@ -3,7 +3,8 @@ import { createEngineRegistry } from "../adapters/speech/engine-registry.js";
 import { STORAGE_KEYS } from "../core/ports/storage.port.js";
 import { createReader } from "../core/usecases/reader.js";
 import { createExporter } from "../core/usecases/exporter.js";
-import { decodeAndJoin, encodeMp3, encodeWav } from "../adapters/audio/mp3-encoder.js";
+import { decodeAndJoin, encodeMp3, encodeWav, resample } from "../adapters/audio/mp3-encoder.js";
+import { FORMATS, DEFAULT_FORMAT, findFormat } from "../adapters/audio/formats.js";
 import { formatSpeed } from "../core/domain/speeds.js";
 import { createI18n } from "./i18n/i18n.js";
 import { createThemeToggle } from "./components/theme-toggle.js";
@@ -194,15 +195,38 @@ el("stop-btn").addEventListener("click", () => {
 
 /* ---------------- exportar a archivo ---------------- */
 
+const formatSelect = el("format-select");
+
+FORMATS.forEach((format) => {
+  const option = document.createElement("option");
+  option.value = format.id;
+  option.textContent = format.label;
+  formatSelect.appendChild(option);
+});
+formatSelect.value = storage.get(STORAGE_KEYS.format, DEFAULT_FORMAT) || DEFAULT_FORMAT;
+formatSelect.addEventListener("change", () => storage.set(STORAGE_KEYS.format, formatSelect.value));
+
 const exporter = createExporter({
   encode: async (blobs) => {
-    const track = await decodeAndJoin(blobs);
+    const format = findFormat(formatSelect.value);
+    const joined = await decodeAndJoin(blobs);
+
+    if (format.kind === "wav") {
+      return { blob: encodeWav(joined), extension: "wav" };
+    }
+
+    // Los perfiles de alta calidad suben a 44,1 kHz: por debajo, el MP3 no
+    // admite más de 160 kbps y pedir 320 no cambiaría nada.
+    const track = await resample(joined, format.sampleRate);
+
     try {
-      const blob = await encodeMp3(track, (percent) => setStatus("status.encoding", { p: percent }));
+      const blob = await encodeMp3(track, format.bitrate, (percent) =>
+        setStatus("status.encoding", { p: percent })
+      );
       return { blob, extension: "mp3" };
     } catch (error) {
       // Sin el codificador MP3 se entrega WAV: pesa más pero suena igual.
-      return { blob: encodeWav(track), extension: "wav" };
+      return { blob: encodeWav(joined), extension: "wav" };
     }
   }
 });

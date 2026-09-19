@@ -55,5 +55,6 @@ export default {
   "status.encoding": "Codifica del file... {p}%",
   "status.exported": "Salvato come {name}",
   "error.engine-cannot-export": "il motore del browser non può salvare l'audio; scegli una voce locale",
-  "error.no-text": "non c'è testo da salvare"
+  "error.no-text": "non c'è testo da salvare",
+  "label.format": "Formato di download"
 };
