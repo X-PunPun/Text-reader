@@ -56,5 +56,17 @@ export default {
   "status.exported": "Saved as {name}",
   "error.engine-cannot-export": "the browser engine cannot save audio; pick a local voice",
   "error.no-text": "there is no text to save",
-  "label.format": "Download format"
+  "label.format": "Download format",
+  "guide.title": "How it works",
+  "guide.toggle": "Show the guide",
+  "guide.s1t": "Paste your text",
+  "guide.s1d": "Type or paste anything. There is no length limit.",
+  "guide.s2t": "Pick a voice",
+  "guide.s2d": "Use your system voices, or download a neural one that then works offline.",
+  "guide.s3t": "Set the speed",
+  "guide.s3d": "Fixed steps from 0.25x to 2.5x, like a video player.",
+  "guide.s4t": "Press play",
+  "guide.s4d": "The sentence and the word being read are highlighted. Pause and click anywhere to continue from there.",
+  "guide.s5t": "Save the audio",
+  "guide.s5d": "Choose a format and download the whole reading as a file."
 };

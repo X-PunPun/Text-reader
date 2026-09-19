@@ -56,5 +56,17 @@ export default {
   "status.exported": "{name}(으)로 저장했습니다",
   "error.engine-cannot-export": "브라우저 엔진은 오디오를 저장할 수 없습니다. 로컬 음성을 선택하세요",
   "error.no-text": "저장할 텍스트가 없습니다",
-  "label.format": "다운로드 형식"
+  "label.format": "다운로드 형식",
+  "guide.title": "사용 방법",
+  "guide.toggle": "가이드 보기",
+  "guide.s1t": "텍스트 붙여넣기",
+  "guide.s1d": "무엇이든 입력하거나 붙여넣으세요. 길이 제한이 없습니다.",
+  "guide.s2t": "음성 선택",
+  "guide.s2d": "시스템 음성을 쓰거나 신경망 음성을 내려받아 오프라인으로 사용할 수 있습니다.",
+  "guide.s3t": "속도 조절",
+  "guide.s3d": "0.25x부터 2.5x까지 고정 단계, 동영상 플레이어처럼.",
+  "guide.s4t": "재생 누르기",
+  "guide.s4d": "읽고 있는 문장과 단어가 강조됩니다. 일시정지 중 아무 곳이나 클릭하면 그 지점부터 이어집니다.",
+  "guide.s5t": "오디오 저장",
+  "guide.s5d": "형식을 고르고 전체 낭독을 파일로 내려받으세요."
 };

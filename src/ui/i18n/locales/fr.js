@@ -56,5 +56,17 @@ export default {
   "status.exported": "Enregistré sous {name}",
   "error.engine-cannot-export": "le moteur du navigateur ne peut pas enregistrer l'audio ; choisissez une voix locale",
   "error.no-text": "il n'y a pas de texte à enregistrer",
-  "label.format": "Format de téléchargement"
+  "label.format": "Format de téléchargement",
+  "guide.title": "Comment ça marche",
+  "guide.toggle": "Afficher le guide",
+  "guide.s1t": "Collez votre texte",
+  "guide.s1d": "Écrivez ou collez ce que vous voulez. Aucune limite de longueur.",
+  "guide.s2t": "Choisissez une voix",
+  "guide.s2d": "Utilisez les voix du système ou téléchargez une voix neuronale, qui fonctionne ensuite hors ligne.",
+  "guide.s3t": "Réglez la vitesse",
+  "guide.s3d": "Paliers fixes de 0.25x à 2.5x, comme un lecteur vidéo.",
+  "guide.s4t": "Lancez la lecture",
+  "guide.s4d": "La phrase et le mot lus sont surlignés. En pause, cliquez où vous voulez pour reprendre là.",
+  "guide.s5t": "Enregistrez l'audio",
+  "guide.s5d": "Choisissez un format et téléchargez toute la lecture."
 };

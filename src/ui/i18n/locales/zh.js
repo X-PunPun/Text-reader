@@ -56,5 +56,17 @@ export default {
   "status.exported": "已保存为 {name}",
   "error.engine-cannot-export": "浏览器引擎无法保存音频，请选择本地语音",
   "error.no-text": "没有可保存的文本",
-  "label.format": "下载格式"
+  "label.format": "下载格式",
+  "guide.title": "使用方法",
+  "guide.toggle": "显示指南",
+  "guide.s1t": "粘贴文本",
+  "guide.s1d": "输入或粘贴任意内容，没有长度限制。",
+  "guide.s2t": "选择语音",
+  "guide.s2d": "使用系统语音，或下载一个神经语音，之后可离线使用。",
+  "guide.s3t": "调整速度",
+  "guide.s3d": "从 0.25x 到 2.5x 的固定档位，就像视频播放器。",
+  "guide.s4t": "点击播放",
+  "guide.s4d": "正在朗读的句子和单词会高亮。暂停后点击任意位置即可从那里继续。",
+  "guide.s5t": "保存音频",
+  "guide.s5d": "选择格式，把整段朗读下载为文件。"
 };

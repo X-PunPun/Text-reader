@@ -56,5 +56,17 @@ export default {
   "status.exported": "Gespeichert als {name}",
   "error.engine-cannot-export": "die Browser-Engine kann kein Audio speichern; wählen Sie eine lokale Stimme",
   "error.no-text": "es gibt keinen Text zum Speichern",
-  "label.format": "Downloadformat"
+  "label.format": "Downloadformat",
+  "guide.title": "So funktioniert es",
+  "guide.toggle": "Anleitung anzeigen",
+  "guide.s1t": "Text einfügen",
+  "guide.s1d": "Schreiben oder einfügen, so viel Sie wollen. Keine Längenbegrenzung.",
+  "guide.s2t": "Stimme wählen",
+  "guide.s2d": "Systemstimmen nutzen oder eine neuronale laden, die danach offline läuft.",
+  "guide.s3t": "Tempo einstellen",
+  "guide.s3d": "Feste Stufen von 0.25x bis 2.5x, wie bei einem Videoplayer.",
+  "guide.s4t": "Abspielen",
+  "guide.s4d": "Satz und Wort werden hervorgehoben. Pausiert können Sie irgendwo klicken, um dort weiterzulesen.",
+  "guide.s5t": "Audio speichern",
+  "guide.s5d": "Format wählen und die ganze Lesung als Datei herunterladen."
 };

@@ -56,5 +56,17 @@ export default {
   "status.exported": "Salvato come {name}",
   "error.engine-cannot-export": "il motore del browser non può salvare l'audio; scegli una voce locale",
   "error.no-text": "non c'è testo da salvare",
-  "label.format": "Formato di download"
+  "label.format": "Formato di download",
+  "guide.title": "Come funziona",
+  "guide.toggle": "Mostra la guida",
+  "guide.s1t": "Incolla il testo",
+  "guide.s1d": "Scrivi o incolla quello che vuoi. Nessun limite di lunghezza.",
+  "guide.s2t": "Scegli una voce",
+  "guide.s2d": "Usa le voci di sistema o scarica una voce neurale, che poi funziona offline.",
+  "guide.s3t": "Imposta la velocità",
+  "guide.s3d": "Passi fissi da 0.25x a 2.5x, come un lettore video.",
+  "guide.s4t": "Premi riproduci",
+  "guide.s4d": "La frase e la parola lette sono evidenziate. In pausa, clicca dove vuoi per continuare da lì.",
+  "guide.s5t": "Salva l'audio",
+  "guide.s5d": "Scegli un formato e scarica l'intera lettura come file."
 };

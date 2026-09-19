@@ -56,5 +56,17 @@ export default {
   "status.exported": "Guardado como {name}",
   "error.engine-cannot-export": "el motor del navegador no puede guardar audio; elige una voz local",
   "error.no-text": "no hay texto que guardar",
-  "label.format": "Formato de descarga"
+  "label.format": "Formato de descarga",
+  "guide.title": "Cómo funciona",
+  "guide.toggle": "Mostrar la guía",
+  "guide.s1t": "Pega tu texto",
+  "guide.s1d": "Escribe o pega lo que quieras. No hay límite de longitud.",
+  "guide.s2t": "Elige una voz",
+  "guide.s2d": "Usa las voces de tu sistema o descarga una neuronal, que luego funciona sin conexión.",
+  "guide.s3t": "Ajusta la velocidad",
+  "guide.s3d": "Pasos fijos de 0.25x a 2.5x, como un reproductor de vídeo.",
+  "guide.s4t": "Pulsa reproducir",
+  "guide.s4d": "Se resalta la frase y la palabra que se lee. En pausa, haz clic donde quieras para seguir desde ahí.",
+  "guide.s5t": "Guarda el audio",
+  "guide.s5d": "Elige un formato y descarga la lectura completa en un archivo."
 };
