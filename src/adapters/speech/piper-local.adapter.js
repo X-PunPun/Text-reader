@@ -12,6 +12,8 @@
  * Implementa SpeechPort, más el `prefetch` opcional.
  */
 
+import { followAudio } from "./word-timeline.js";
+
 const LIB_URL = "https://cdn.jsdelivr.net/npm/@mintplex-labs/piper-tts-web@1.0.5/dist/piper-tts-web.js";
 
 // Binarios de ONNX Runtime. Tienen que ser de la MISMA version que el modulo
@@ -27,9 +29,11 @@ export function createPiperAdapter({ onProgress } = {}) {
   let catalog = null;            // catálogo de voces de la librería
   let session = null;            // sesión de inferencia activa
   let sessionVoice = null;
+  let sessionJob = null;         // carga en curso, para no lanzarla dos veces
   const cache = new Map();       // "voz|texto" -> objectURL ya sintetizado
   const pending = new Map();     // "voz|texto" -> promesa en curso
   let active = false;
+  let unfollow = null;
 
   function isAvailable() {
     // OPFS necesita un contexto seguro: https o localhost.
@@ -81,35 +85,54 @@ export function createPiperAdapter({ onProgress } = {}) {
     }));
   }
 
-  async function ensureSession(voiceId) {
-    const api = await load();
+  /**
+   * Carga (descargando si hace falta) el modelo de una voz.
+   *
+   * Está serializado a propósito: mientras suena una frase se va preparando
+   * la siguiente, así que puede haber dos llamadas a la vez. Si ambas
+   * intentaran inicializar el motor se pisarían y la carga fallaba —
+   * justo lo que ocurría al estrenar una voz, con la descarga a medias.
+   */
+  function ensureSession(voiceId) {
     const id = bareId(voiceId);
 
-    if (session && sessionVoice === id) return session;
+    if (session && sessionVoice === id) return Promise.resolve(session);
+    if (sessionJob && sessionJob.id === id) return sessionJob.promise;
 
-    // TtsSession guarda una única instancia estática y create() la reutiliza
-    // aunque se le pida otra voz. Sin este reinicio solo sonaba la primera
-    // voz elegida y no había forma de cambiar sin recargar la página.
-    api.TtsSession._instance = null;
-    session = null;
-    sessionVoice = null;
-    clearCache();
+    const promise = (async () => {
+      const api = await load();
 
-    const stored = new Set(await api.stored());
-    if (!stored.has(id)) {
-      // Primera vez con esta voz: se descarga el modelo y queda guardado.
-      await api.download(id, (progress) => {
-        const total = progress?.total || 0;
-        const loaded = progress?.loaded || 0;
-        onProgress?.({ voiceId: id, percent: total ? Math.round((loaded * 100) / total) : null });
-      });
-      onProgress?.({ voiceId: id, percent: 100 });
-    }
+      // TtsSession guarda una única instancia estática y create() la
+      // reutiliza aunque se le pida otra voz. Sin este reinicio solo sonaba
+      // la primera voz elegida y no había forma de cambiar sin recargar.
+      api.TtsSession._instance = null;
+      session = null;
+      sessionVoice = null;
+      clearCache();
 
-    session = await api.TtsSession.create({ voiceId: id });
-    await session.waitReady; // create() vuelve antes de que el motor este listo
-    sessionVoice = id;
-    return session;
+      const stored = new Set(await api.stored());
+      if (!stored.has(id)) {
+        // Primera vez con esta voz: se descarga el modelo y queda guardado.
+        await api.download(id, (progress) => {
+          const total = progress?.total || 0;
+          const loaded = progress?.loaded || 0;
+          onProgress?.({ voiceId: id, percent: total ? Math.round((loaded * 100) / total) : null });
+        });
+        onProgress?.({ voiceId: id, percent: 100, phase: "downloaded" });
+      }
+
+      const created = await api.TtsSession.create({ voiceId: id });
+      await created.waitReady; // create() vuelve antes de que el motor esté listo
+      session = created;
+      sessionVoice = id;
+      return created;
+    })();
+
+    sessionJob = { id, promise };
+    promise.catch(() => {}).then(() => {
+      if (sessionJob && sessionJob.id === id) sessionJob = null;
+    });
+    return promise;
   }
 
   function cacheKey(voiceId, text) {
@@ -156,29 +179,46 @@ export function createPiperAdapter({ onProgress } = {}) {
   /** Va preparando el siguiente fragmento mientras suena el actual. */
   function prefetch(text, { voiceId }) {
     if (!isAvailable()) return;
+    // Si el modelo aún se está descargando, adelantar trabajo no ayuda.
+    if (!session || sessionVoice !== bareId(voiceId)) return;
+
     const key = cacheKey(voiceId, text);
     if (cache.has(key) || pending.has(key)) return;
     synthesize(text, voiceId).catch(() => {});
   }
 
-  function speak({ text, voiceId, rate, onEnd, onError }) {
+  function stopFollowing() {
+    if (unfollow) unfollow();
+    unfollow = null;
+  }
+
+  function speak({ text, voiceId, rate, onBoundary, onEnd, onError }) {
     if (!isAvailable()) {
       onError("no-opfs");
       return;
     }
 
     active = true;
+    stopFollowing();
+
     synthesize(text, voiceId)
       .then((url) => {
         if (!active) return;
-        audio.onended = () => active && onEnd();
+        audio.onended = () => {
+          stopFollowing();
+          if (active) onEnd();
+        };
         audio.onerror = () => {
+          stopFollowing();
           if (!active) return;
           active = false;
           onError("playback");
         };
         audio.src = url;
         audio.playbackRate = Math.min(4, Math.max(0.5, rate));
+        // El audio no trae marcas de palabra: se deducen del avance del
+        // reproductor para poder seguir la lectura palabra a palabra.
+        if (onBoundary) unfollow = followAudio(audio, text, onBoundary);
         return audio.play();
       })
       .catch((error) => {
@@ -192,6 +232,7 @@ export function createPiperAdapter({ onProgress } = {}) {
     const message = String(error?.message || error || "");
     if (/fetch|network|Failed to fetch/i.test(message)) return "model-download";
     if (message.includes("NotAllowedError")) return "autoplay-blocked";
+    if (message) console.warn("[piper]", message); // deja rastro para depurar
     return "model-load";
   }
 
@@ -201,6 +242,7 @@ export function createPiperAdapter({ onProgress } = {}) {
 
   function cancel() {
     active = false;
+    stopFollowing();
     if (!audio) return;
     audio.pause();
     audio.removeAttribute("src");
@@ -227,7 +269,7 @@ export function createPiperAdapter({ onProgress } = {}) {
   return {
     id: "piper",
     label: "Piper (local voices)",
-    supportsBoundary: false,
+    supportsBoundary: true, // deducido del avance del audio
     isAvailable,
     listVoices,
     speak,

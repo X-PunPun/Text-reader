@@ -1,4 +1,5 @@
 import { PROVIDERS } from "./providers.js";
+import { followAudio } from "./word-timeline.js";
 
 /**
  * Adaptador: motores de voz remotos que devuelven un archivo de audio.
@@ -15,6 +16,7 @@ export function createRemoteTtsAdapter(providerId, { getTemplate } = {}) {
   if (audio) audio.preload = "auto";
 
   let active = false;
+  let unfollow = null;
 
   function isAvailable() {
     return Boolean(audio);
@@ -24,7 +26,12 @@ export function createRemoteTtsAdapter(providerId, { getTemplate } = {}) {
     return Promise.resolve(provider.voices());
   }
 
-  function speak({ text, voiceId, rate, onEnd, onError }) {
+  function stopFollowing() {
+    if (unfollow) unfollow();
+    unfollow = null;
+  }
+
+  function speak({ text, voiceId, rate, onBoundary, onEnd, onError }) {
     if (!audio) {
       onError("unsupported");
       return;
@@ -37,7 +44,9 @@ export function createRemoteTtsAdapter(providerId, { getTemplate } = {}) {
     }
 
     active = true;
+    stopFollowing();
     audio.onended = () => {
+      stopFollowing();
       if (!active) return;
       onEnd();
     };
@@ -51,6 +60,7 @@ export function createRemoteTtsAdapter(providerId, { getTemplate } = {}) {
 
     audio.src = url;
     audio.playbackRate = Math.min(4, Math.max(0.5, rate));
+    if (onBoundary) unfollow = followAudio(audio, text, onBoundary);
     audio.play().catch((error) => {
       if (!active) return;
       active = false;
@@ -68,6 +78,7 @@ export function createRemoteTtsAdapter(providerId, { getTemplate } = {}) {
 
   function cancel() {
     active = false;
+    stopFollowing();
     if (!audio) return;
     audio.pause();
     audio.removeAttribute("src");
@@ -77,7 +88,7 @@ export function createRemoteTtsAdapter(providerId, { getTemplate } = {}) {
   return {
     id: provider.id,
     label: provider.label,
-    supportsBoundary: false,
+    supportsBoundary: true, // deducido del avance del audio
     isAvailable,
     listVoices,
     speak,
