@@ -95,7 +95,7 @@ function renderTransport() {
 createThemeToggle({ button: el("theme-btn"), icon: el("theme-icon"), storage });
 
 createGuide({
-  panels: [el("guide"), el("opensource")],
+  panels: [el("guide"), el("opensource"), el("about")],
   toggle: el("guide-toggle"),
   storage
 });

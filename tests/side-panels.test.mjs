@@ -1,5 +1,6 @@
 /**
- * Los dos paneles laterales responden al mismo botón.
+ * Los bloques de contexto responden al mismo botón: las dos notas laterales
+ * y el texto descriptivo del pie.
  *
  * Necesita jsdom:  npm install && node tests/side-panels.test.mjs
  */
@@ -32,7 +33,11 @@ async function mount(width, saved) {
   );
 
   createGuide({
-    panels: [document.getElementById("guide"), document.getElementById("opensource")],
+    panels: [
+      document.getElementById("guide"),
+      document.getElementById("opensource"),
+      document.getElementById("about")
+    ],
     toggle: document.getElementById("guide-toggle"),
     storage: { get: (k, d) => (store.has(k) ? store.get(k) : d), set: (k, v) => store.set(k, v) }
   });
@@ -42,21 +47,24 @@ async function mount(width, saved) {
     store,
     guide: () => document.getElementById("guide").classList.contains("is-open"),
     note: () => document.getElementById("opensource").classList.contains("is-open"),
+    about: () => document.getElementById("about").classList.contains("is-open"),
     toggle: () => document.getElementById("guide-toggle"),
     expanded: () => document.getElementById("guide-toggle").getAttribute("aria-expanded")
   };
 }
 
 const wide = await mount(1440, undefined);
-check("en pantalla ancha los dos empiezan abiertos", () => {
+check("en pantalla ancha los tres empiezan abiertos", () => {
   assert.equal(wide.guide(), true, "guía cerrada");
   assert.equal(wide.note(), true, "nota cerrada");
+  assert.equal(wide.about(), true, "texto descriptivo cerrado");
 });
 
-check("el botón cierra los dos a la vez", () => {
+check("el botón los cierra a la vez", () => {
   wide.toggle().click();
   assert.equal(wide.guide(), false);
   assert.equal(wide.note(), false);
+  assert.equal(wide.about(), false);
   assert.equal(wide.expanded(), "false");
 });
 
@@ -64,6 +72,7 @@ check("y los vuelve a abrir juntos", () => {
   wide.toggle().click();
   assert.equal(wide.guide(), true);
   assert.equal(wide.note(), true);
+  assert.equal(wide.about(), true);
   assert.equal(wide.expanded(), "true");
 });
 
@@ -75,12 +84,14 @@ const narrow = await mount(900, undefined);
 check("en pantalla estrecha empiezan replegados", () => {
   assert.equal(narrow.guide(), false);
   assert.equal(narrow.note(), false);
+  assert.equal(narrow.about(), false);
 });
 
 const remembered = await mount(900, "1");
 check("una preferencia guardada manda sobre el ancho", () => {
   assert.equal(remembered.guide(), true);
   assert.equal(remembered.note(), true);
+  assert.equal(remembered.about(), true);
 });
 
 check("Escape los cierra cuando tapan el contenido", () => {
@@ -88,6 +99,14 @@ check("Escape los cierra cuando tapan el contenido", () => {
   remembered.dom.window.document.dispatchEvent(event);
   assert.equal(remembered.guide(), false);
   assert.equal(remembered.note(), false);
+  assert.equal(remembered.about(), false);
+});
+
+check("plegado no significa borrado: el texto sigue en el documento", () => {
+  // importa para los buscadores: nada de display:none
+  const about = remembered.dom.window.document.getElementById("about");
+  assert.ok(about.textContent.includes("gratis") || about.textContent.includes("free"));
+  assert.ok(about.querySelectorAll("dt").length >= 4, "faltan las preguntas frecuentes");
 });
 
 console.log(results.join("\n"));

@@ -58,7 +58,7 @@ export default {
   "error.no-text": "保存するテキストがありません",
   "label.format": "ダウンロード形式",
   "guide.title": "使い方",
-  "guide.toggle": "ガイドを表示",
+  "guide.toggle": "補足情報の表示を切り替え",
   "guide.s1t": "テキストを貼り付け",
   "guide.s1d": "自由に入力または貼り付けできます。長さの制限はありません。",
   "guide.s2t": "音声を選ぶ",

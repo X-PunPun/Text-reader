@@ -58,7 +58,7 @@ export default {
   "error.no-text": "没有可保存的文本",
   "label.format": "下载格式",
   "guide.title": "使用方法",
-  "guide.toggle": "显示指南",
+  "guide.toggle": "显示或隐藏说明信息",
   "guide.s1t": "粘贴文本",
   "guide.s1d": "输入或粘贴任意内容，没有长度限制。",
   "guide.s2t": "选择语音",

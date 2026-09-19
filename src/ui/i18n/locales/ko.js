@@ -58,7 +58,7 @@ export default {
   "error.no-text": "저장할 텍스트가 없습니다",
   "label.format": "다운로드 형식",
   "guide.title": "사용 방법",
-  "guide.toggle": "가이드 보기",
+  "guide.toggle": "추가 정보 표시 전환",
   "guide.s1t": "텍스트 붙여넣기",
   "guide.s1d": "무엇이든 입력하거나 붙여넣으세요. 길이 제한이 없습니다.",
   "guide.s2t": "음성 선택",

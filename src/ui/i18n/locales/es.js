@@ -58,7 +58,7 @@ export default {
   "error.no-text": "no hay texto que guardar",
   "label.format": "Formato de descarga",
   "guide.title": "Cómo funciona",
-  "guide.toggle": "Mostrar la guía",
+  "guide.toggle": "Mostrar u ocultar la información",
   "guide.s1t": "Pega tu texto",
   "guide.s1d": "Escribe o pega lo que quieras. No hay límite de longitud.",
   "guide.s2t": "Elige una voz",

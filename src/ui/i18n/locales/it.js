@@ -58,7 +58,7 @@ export default {
   "error.no-text": "non c'è testo da salvare",
   "label.format": "Formato di download",
   "guide.title": "Come funziona",
-  "guide.toggle": "Mostra la guida",
+  "guide.toggle": "Mostra o nascondi le informazioni",
   "guide.s1t": "Incolla il testo",
   "guide.s1d": "Scrivi o incolla quello che vuoi. Nessun limite di lunghezza.",
   "guide.s2t": "Scegli una voce",

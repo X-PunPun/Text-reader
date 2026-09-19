@@ -58,7 +58,7 @@ export default {
   "error.no-text": "لا يوجد نص لحفظه",
   "label.format": "صيغة التنزيل",
   "guide.title": "طريقة الاستخدام",
-  "guide.toggle": "إظهار الدليل",
+  "guide.toggle": "إظهار المعلومات أو إخفاؤها",
   "guide.s1t": "الصق نصك",
   "guide.s1d": "اكتب أو الصق ما تشاء. لا يوجد حد للطول.",
   "guide.s2t": "اختر صوتًا",

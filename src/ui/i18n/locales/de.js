@@ -58,7 +58,7 @@ export default {
   "error.no-text": "es gibt keinen Text zum Speichern",
   "label.format": "Downloadformat",
   "guide.title": "So funktioniert es",
-  "guide.toggle": "Anleitung anzeigen",
+  "guide.toggle": "Zusatzinformationen ein- oder ausblenden",
   "guide.s1t": "Text einfügen",
   "guide.s1d": "Schreiben oder einfügen, so viel Sie wollen. Keine Längenbegrenzung.",
   "guide.s2t": "Stimme wählen",

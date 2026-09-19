@@ -58,7 +58,7 @@ export default {
   "error.no-text": "il n'y a pas de texte à enregistrer",
   "label.format": "Format de téléchargement",
   "guide.title": "Comment ça marche",
-  "guide.toggle": "Afficher le guide",
+  "guide.toggle": "Afficher ou masquer les informations",
   "guide.s1t": "Collez votre texte",
   "guide.s1d": "Écrivez ou collez ce que vous voulez. Aucune limite de longueur.",
   "guide.s2t": "Choisissez une voix",

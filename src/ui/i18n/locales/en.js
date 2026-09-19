@@ -58,7 +58,7 @@ export default {
   "error.no-text": "there is no text to save",
   "label.format": "Download format",
   "guide.title": "How it works",
-  "guide.toggle": "Show the guide",
+  "guide.toggle": "Show or hide the extra information",
   "guide.s1t": "Paste your text",
   "guide.s1d": "Type or paste anything. There is no length limit.",
   "guide.s2t": "Pick a voice",
