@@ -40,16 +40,33 @@ node tests/reader.test.mjs
 
 ## Motores de voz
 
-| Motor | Requiere cuenta | Notas |
-|---|---|---|
-| Navegador (`native`) | No | Voces del sistema operativo. Funciona sin conexión y es el predeterminado. Es el único que informa de la palabra en curso. |
-| StreamElements | No | Catálogo de Amazon Polly a través de un endpoint público. |
-| Google Translate TTS | No | Endpoint público no oficial, limitado a ~200 caracteres por petición. |
-| Custom endpoint | Depende | Pega la URL de tu propio servicio, con `{text}` y `{voice}` como marcadores. |
+| Motor | Cuenta / API key | Conexión | Notas |
+|---|---|---|---|
+| **Navegador** (`native`) | No | No necesita | Voces del sistema operativo. Predeterminado y el único que resalta la palabra exacta. |
+| **Piper local** (`piper`) | No | Solo la primera vez | Modelos neuronales que se descargan una vez y quedan guardados en el dispositivo. Después funciona sin conexión. |
+| StreamElements | No | Sí | Endpoint público no oficial. Inestable: puede estar caído. |
+| Google Translate TTS | No | Sí | Endpoint público no oficial, ~200 caracteres por petición. |
+| Custom endpoint | Depende | Sí | Pega la URL de tu propio servicio, con `{text}` y `{voice}`. |
 
-Los tres últimos son servicios de terceros: pueden limitar el ritmo de
-peticiones o dejar de responder sin aviso. Por eso el motor del navegador
-sigue siendo el predeterminado.
+### Voces locales (Piper)
+
+La opción recomendada cuando las voces del sistema no bastan y no se quiere
+depender de ningún servicio. Al elegir una voz por primera vez se descarga su
+modelo (unos 20–80 MB) desde Hugging Face y se guarda en el **OPFS** del
+navegador; a partir de ahí la síntesis ocurre en tu equipo.
+
+- Las voces ya descargadas aparecen marcadas con `✓`; las demás muestran su tamaño.
+- *Delete downloaded voice* borra el modelo del dispositivo.
+- Hay voces en español, inglés, portugués, francés, alemán, italiano, chino,
+  árabe, ruso y una veintena de idiomas más. **No hay japonés ni coreano**: para
+  esos dos sigue siendo mejor el motor del navegador.
+- Necesita un contexto seguro (`localhost` o `https`) y un navegador con OPFS
+  (Chrome o Edge actuales; Firefox y Safari pueden no funcionar).
+- Mientras suena una frase se va sintetizando la siguiente, para que no haya
+  silencios entre medias.
+
+Librería usada: [`@mintplex-labs/piper-tts-web`](https://github.com/Mintplex-Labs/piper-tts-web)
+(MIT), cargada desde jsDelivr solo cuando se selecciona este motor.
 
 ## Arquitectura
 
@@ -72,6 +89,7 @@ src/
   adapters/                    ← implementaciones concretas
     speech/
       web-speech.adapter.js    Web Speech API del navegador
+      piper-local.adapter.js   modelos Piper guardados en el dispositivo
       remote-tts.adapter.js    servicios HTTP que devuelven audio
       providers.js             catálogo de proveedores remotos
       engine-registry.js       selección de motor
